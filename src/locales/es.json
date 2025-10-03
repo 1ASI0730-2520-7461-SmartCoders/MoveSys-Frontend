@@ -1,0 +1,27 @@
+{
+  "app": {
+    "title": "MoveSys",
+    "description": "Sistema de Gestión de Flota"
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "register": "Registrarse",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "rememberMe": "Recordarme"
+  },
+  "dashboard": {
+    "title": "Panel de Control",
+    "welcome": "Bienvenido a MoveSys"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "deliveries": "Entregas",
+    "users": "Usuarios",
+    "fleetManagement": "Gestión de Flota",
+    "fuelConsumption": "Combustible",
+    "reports": "Reportes",
+    "logout": "Salir"
+  }
+}
+

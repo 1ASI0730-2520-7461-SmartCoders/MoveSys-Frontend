@@ -1,0 +1,27 @@
+{
+  "app": {
+    "title": "MoveSys",
+    "description": "Fleet Management System"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember Me"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome to MoveSys"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "deliveries": "Deliveries",
+    "users": "Users",
+    "fleetManagement": "Fleet Management",
+    "fuelConsumption": "Fuel Consumption",
+    "reports": "Reports",
+    "logout": "Logout"
+  }
+}
+
