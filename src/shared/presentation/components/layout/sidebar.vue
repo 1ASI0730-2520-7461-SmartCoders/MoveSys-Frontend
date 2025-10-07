@@ -1,6 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   isCollapsed: {
@@ -13,92 +16,80 @@ const emit = defineEmits(['toggle', 'navigate'])
 
 const route = useRoute()
 
-// Estructura de datos para los botones de navegación
-const menuItems = ref([
+// Data structure for navigation buttons
+const menuItems = computed(() => [
   {
-    label: 'Dashboard',
+    label: t('navigation.dashboard'),
     icon: 'pi pi-home',
     route: '/dashboard'
   },
   {
-    label: 'Entregas',
+    label: t('navigation.deliveries'),
     icon: 'pi pi-truck',
     route: '/deliveries'
   },
   {
-    label: 'Usuarios',
+    label: t('navigation.users'),
     icon: 'pi pi-users',
     route: '/users'
   },
   {
-    label: 'Gestión de Flota',
+    label: t('navigation.fleetManagement'),
     icon: 'pi pi-car',
     route: '/fleet-management'
   },
+  // {
+  //   label: t('navigation.fuelConsumption'),
+  //   icon: 'pi pi-car',
+  //   route: '/fuel-consumption'
+  // },
   {
-    label: 'Registro de Ruta',
-    icon: 'pi pi-map-marker',
-    route: '/route-registry'
-  },
-  {
-    label: 'Combustible',
-    icon: 'pi pi-car',
-    route: '/fuel-consumption'
-  },
-  {
-    label: 'Reportes',
+    label: t('navigation.reports'),
     icon: 'pi pi-chart-bar',
     route: '/reports'
   }
 ])
 
-// Modelo original para pv-menu (mantenido por compatibilidad)
+// Original model for pv-menu (maintained for compatibility)
 const menuModel = ref([
   {
-    label: 'Dashboard',
+    label: t('navigation.dashboard'),
     icon: 'pi pi-home',
     command: () => navigateTo('/dashboard'),
     class: () => route.path === '/dashboard' ? 'active-menu-item' : '',
     style: () => route.path === '/dashboard' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
   },
   {
-    label: 'Entregas',
+    label: t('navigation.deliveries'),
     icon: 'pi pi-truck',
     command: () => navigateTo('/deliveries'),
     class: () => route.path === '/deliveries' ? 'active-menu-item' : '',
     style: () => route.path === '/deliveries' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
   },
   {
-    label: 'Usuarios',
+    label: t('navigation.users'),
     icon: 'pi pi-users',
     command: () => navigateTo('/users'),
     class: () => route.path === '/users' ? 'active-menu-item' : '',
     style: () => route.path === '/users' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
   },
   {
-    label: 'Gestión de Flota',
+    label: t('navigation.fleetManagement'),
     icon: 'pi pi-car',
     command: () => navigateTo('/fleet-management'),
     class: () => route.path === '/fleet-management' ? 'active-menu-item' : '',
     style: () => route.path === '/fleet-management' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
   },
+  // {
+  //   label: t('navigation.fuelConsumption'),
+  //   icon: 'pi pi-car',
+  //   command: () => navigateTo('/fuel-consumption'),
+  //   class: () => route.path === '/fuel-consumption' ? 'active-menu-item' : '',
+  //   style: () => route.path === '/fuel-consumption' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
+  // },
   {
-    label: 'Registro de Ruta',
-    icon: 'pi pi-map-marker',
-    command: () => navigateTo('/route-registry'),
-    class: () => route.path === '/route-registry' ? 'active-menu-item' : '',
-    style: () => route.path === '/route-registry' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
-  },
-  {
-    label: 'Combustible',
-    icon: 'pi pi-car',
-    command: () => navigateTo('/fuel-consumption'),
-    class: () => route.path === '/fuel-consumption' ? 'active-menu-item' : '',
-    style: () => route.path === '/fuel-consumption' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
-  },
-  {
-    label: 'Reportes',
-    icon: 'pi pi-cog',
+    label: t('navigation.reports'),
+    icon: 'pi pi-chart-bar',
     command: () => navigateTo('/reports'),
     class: () => route.path === '/reports' ? 'active-menu-item' : '',
     style: () => route.path === '/reports' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
@@ -109,17 +100,17 @@ const navigateTo = (routePath) => {
   emit('navigate', routePath)
 }
 
-// Función para verificar si una ruta está activa
+// Function to check if a route is active
 const isActiveRoute = (routePath) => {
   return route.path === routePath
 }
 
 const handleLogout = () => {
-  // Limpiar datos de sesión
+  // Clear session data
   localStorage.removeItem('movesys_token')
   localStorage.removeItem('movesys_user')
   
-  // Redirigir al login
+  // Redirect to login
   emit('navigate', '/login')
 }
 </script>
@@ -155,13 +146,13 @@ const handleLogout = () => {
     <!-- Logout Button -->
     <div class="sidebar-footer">
       <pv-button
-        :label="isCollapsed ? '' : 'Salir'"
+        :label="isCollapsed ? '' : t('navigation.logout')"
         icon="pi pi-sign-out"
         severity="danger"
         text
         @click="handleLogout"
         class="logout-button"
-        :title="isCollapsed ? 'Salir' : ''"
+        :title="isCollapsed ? t('navigation.logout') : ''"
       />
     </div>
   </aside>

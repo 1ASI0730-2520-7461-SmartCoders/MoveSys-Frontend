@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <pv-toast />
     <!-- Use main layout for authenticated routes -->
     <MainLayout v-if="isAuthenticated" />
     <!-- Use simple layout for auth pages -->
@@ -9,6 +10,8 @@
 
 <script setup>
 import { computed, onMounted } from 'vue'
+import { useToast } from 'primevue/usetoast'
+import { notificationService } from './shared/infrastructure/notification.service.js'
 import { useRoute } from 'vue-router'
 import MainLayout from './shared/presentation/components/layout/main-layout.vue'
 
@@ -30,6 +33,20 @@ const isAuthenticated = computed(() => {
 onMounted(() => {
   // Initialize app
   console.log('MoveSys Frontend App initialized')
+  // Wire toast instance
+  const toast = useToast()
+  notificationService.setToastInstance(toast)
+  
+  // Set temporary token for development
+  if (!localStorage.getItem('movesys_token')) {
+    localStorage.setItem('movesys_token', 'dev-token-123')
+    localStorage.setItem('movesys_user', JSON.stringify({
+      name: 'Developer User',
+      email: 'dev@movesys.com',
+      role: 'admin'
+    }))
+    console.log('🔑 Temporary token set for development')
+  }
 })
 </script>
 

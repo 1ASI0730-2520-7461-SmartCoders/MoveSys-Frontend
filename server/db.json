@@ -1,0 +1,147 @@
+{
+  "users": [
+    {
+      "first_name": "Mel Andree",
+      "last_name": "Orellana Rodriguez",
+      "dni": "73572137",
+      "phone_number": "997701729",
+      "role": "driver",
+      "status": "active",
+      "id": 1
+    },
+    {
+      "first_name": "Kevin Adolfo",
+      "last_name": "Orellna ",
+      "dni": "72374849",
+      "phone_number": "2323233",
+      "role": "driver",
+      "status": "active",
+      "id": 2
+    },
+    {
+      "first_name": "Maria",
+      "last_name": "Santos ",
+      "dni": "2342323",
+      "phone_number": "232323",
+      "role": "driver",
+      "status": "active",
+      "id": 3
+    }
+  ],
+  "vehicles": [
+    {
+      "license_plate": "VOJ-345",
+      "brand": "Volvo ",
+      "model": "raptor ",
+      "year": 2022,
+      "color": "Negro ",
+      "type": "truck",
+      "capacity": 1000,
+      "fuel_type": "gasoline",
+      "status": "in_use",
+      "current_driver": "Mel Andree Orellana Rodriguez",
+      "last_maintenance": null,
+      "next_maintenance": null,
+      "mileage": 1200,
+      "id": 1
+    },
+    {
+      "license_plate": "3434",
+      "brand": "3434",
+      "model": "3434",
+      "year": 2030,
+      "color": "3434",
+      "type": "truck",
+      "capacity": 344,
+      "fuel_type": "gasoline",
+      "status": "in_use",
+      "current_driver": "Kevin Adolfo Orellna",
+      "last_maintenance": null,
+      "next_maintenance": null,
+      "mileage": 3434,
+      "id": 2
+    },
+    {
+      "license_plate": "cdvd",
+      "brand": "vdvd",
+      "model": "vdvd",
+      "year": 2030,
+      "color": "edede",
+      "type": "truck",
+      "capacity": 342,
+      "fuel_type": "gasoline",
+      "status": "in_use",
+      "current_driver": "Maria Santos",
+      "last_maintenance": null,
+      "next_maintenance": null,
+      "mileage": 23,
+      "id": 3
+    }
+  ],
+  "deliveries": [
+    {
+      "code": "DEL-001",
+      "customerName": "344dd",
+      "address": "Av. Principal 123",
+      "origin_province": "Lima",
+      "destination_province": "Arequipa",
+      "scheduledAt": null,
+      "status": "pending",
+      "vehicleId": null,
+      "vehicle_plate": "3434",
+      "distance_km": 1000,
+      "eta_minutes": 8,
+      "id": 1
+    },
+    {
+      "code": "vewrwr",
+      "customerName": " cvv  v",
+      "address": "cv cv",
+      "origin_province": "Arequipa",
+      "destination_province": "Trujillo",
+      "scheduledAt": "2025-10-08T18:31:00.000Z",
+      "status": "pending",
+      "vehicleId": null,
+      "vehicle_plate": "VOJ-345",
+      "distance_km": 23,
+      "eta_minutes": 23,
+      "id": 2
+    },
+    {
+      "code": "34",
+      "customerName": "3434",
+      "address": "3434",
+      "origin_province": "Lima",
+      "destination_province": "Arequipa",
+      "scheduledAt": null,
+      "status": "pending",
+      "vehicleId": null,
+      "vehicle_plate": "cdvd",
+      "distance_km": 300,
+      "eta_minutes": 3,
+      "id": 3
+    }
+  ],
+  "fuel-entries": [
+    {
+      "vehicle_plate": "VOJ-345",
+      "fuel_type": "gasoline",
+      "liters": 50.5,
+      "cost": 150.75,
+      "date": "2024-01-15T08:00:00Z",
+      "location": "Estación de Servicio Central",
+      "notes": "Carga completa de combustible",
+      "id": 1
+    },
+    {
+      "vehicle_plate": "VOJ-345",
+      "fuel_type": "gasoline",
+      "liters": 30,
+      "cost": 90,
+      "date": "2024-01-20T14:30:00Z",
+      "location": "Estación de Servicio Norte",
+      "notes": "Carga parcial para ruta corta",
+      "id": 2
+    }
+  ]
+}

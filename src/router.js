@@ -6,9 +6,12 @@ import Register from './shared/presentation/views/auth/register.vue'
 
 import Dashboard from './dashboard/presentation/views/dashboard.vue'
 import FleetManagement from './fleet-management/presentation/views/fleet-management.vue'
+import VehicleForm from './fleet-management/presentation/views/vehicle-form.vue'
 import Reports from './reporting/presentation/views/reports.vue'
 import Users from './ user-management/presentation/views/users.vue'
+import UserForm from './ user-management/presentation/views/user-form.vue'
 import DeliveryManagement from './delivery-management/presentation/views/deliveries.vue'
+import DeliveryForm from './delivery-management/presentation/views/delivery-form.vue'
 import Fuel from './fuel-consumption/presentation/views/fuel-consumption.vue'
 
 const routes = [
@@ -43,6 +46,18 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/fleet-management/formulario',
+    name: 'VehicleForm',
+    component: VehicleForm,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/fleet-management/formulario/:id',
+    name: 'VehicleFormEdit',
+    component: VehicleForm,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/reports',
     name: 'Reports',
     component: Reports,
@@ -55,9 +70,33 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/users/formulario',
+    name: 'UserForm',
+    component: UserForm,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/users/formulario/:id',
+    name: 'UserFormEdit',
+    component: UserForm,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/deliveries',
     name: 'DeliveryManagement',
     component: DeliveryManagement,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/deliveries/formulario',
+    name: 'DeliveryForm',
+    component: DeliveryForm,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/deliveries/formulario/:id',
+    name: 'DeliveryFormEdit',
+    component: DeliveryForm,
     meta: { requiresAuth: true }
   },
   {

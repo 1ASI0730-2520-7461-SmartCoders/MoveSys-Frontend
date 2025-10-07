@@ -1,6 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import LanguageSwitcher from '../navigation/language-switcher.vue'
+
+const { t } = useI18n()
 
 const props = defineProps({
   currentUser: {
@@ -19,16 +22,16 @@ const showUserMenu = ref(false)
 const defaultAvatar = '/images/default-user.svg'
 
 const onLanguageChanged = (language) => {
-  console.log('Idioma cambiado a:', language)
-  // Aquí puedes agregar lógica adicional si es necesario
+  console.log('Language changed to:', language)
+  // Here you can add additional logic if necessary
 }
 
 const openSettings = () => {
-  console.log('Abrir configuración')
+  console.log('Open settings')
 }
 
 const openNotifications = () => {
-  console.log('Abrir notificaciones')
+  console.log('Open notifications')
 }
 
 const toggleUserMenu = () => {
@@ -36,7 +39,7 @@ const toggleUserMenu = () => {
 }
 
 const openProfile = () => {
-  console.log('Abrir perfil')
+  console.log('Open profile')
   showUserMenu.value = false
 }
 
@@ -45,7 +48,7 @@ const handleLogout = () => {
   showUserMenu.value = false
 }
 
-// Cerrar menú al hacer clic fuera
+// Close menu when clicking outside
 import { onMounted, onUnmounted } from 'vue'
 
 const handleClickOutside = (event) => {
@@ -69,7 +72,7 @@ onUnmounted(() => {
     <div class="header-content">
       <!-- Left Side -->
       <div class="header-left">
-        <h1 class="page-title">Centro de Control Operacional</h1>
+        <h1 class="page-title">{{ t('reporting.title') }}</h1>
       </div>
       
       <!-- Right Side -->

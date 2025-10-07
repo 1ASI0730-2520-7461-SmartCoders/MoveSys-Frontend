@@ -1,11 +1,12 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const router = useRouter()
-const email = ref('')
-const password = ref('')
-const rememberMe = ref(false)
+const email = ref('admin@movesys.com')
+const password = ref('123456')
 const loading = ref(false)
 const emailError = ref('')
 const passwordError = ref('')
@@ -21,18 +22,18 @@ const validateForm = () => {
   let isValid = true
 
   if (!email.value) {
-    emailError.value = 'El correo es requerido'
+    emailError.value = t('auth.emailRequired')
     isValid = false
   } else if (!/\S+@\S+\.\S+/.test(email.value)) {
-    emailError.value = 'Ingrese un correo válido'
+    emailError.value = t('auth.validEmail')
     isValid = false
   }
 
   if (!password.value) {
-    passwordError.value = 'La contraseña es requerida'
+    passwordError.value = t('auth.passwordRequired')
     isValid = false
   } else if (password.value.length < 6) {
-    passwordError.value = 'La contraseña debe tener al menos 6 caracteres'
+    passwordError.value = t('auth.passwordMinLength')
     isValid = false
   }
 
@@ -40,52 +41,58 @@ const validateForm = () => {
 }
 
 const handleLogin = async () => {
-  console.log(' Iniciando proceso de login...')
+  console.log(' Starting login process...')
   
   if (!validateForm()) {
-    console.log(' Formulario no válido')
+    console.log(' Invalid form')
     return
   }
 
-  console.log(' Formulario válido, iniciando login...')
+  // Validate fixed credentials
+  const validEmail = 'admin@movesys.com'
+  const validPassword = '123456'
+
+  if (email.value !== validEmail || password.value !== validPassword) {
+    emailError.value = t('auth.invalidCredentials')
+    passwordError.value = t('auth.invalidCredentials')
+    return
+  }
+
+  console.log(' Valid credentials, starting login...')
   loading.value = true
 
   try {
-    // Simular login
-    console.log('⏳ Simulando login...')
+    // Simulate login
+    console.log('⏳ Simulating login...')
     await new Promise(resolve => setTimeout(resolve, 1000))
 
-    // Guardar datos en localStorage
+    // Save data to localStorage
     const token = 'demo-token-' + Date.now()
     const userData = {
       email: email.value,
-      firstName: 'Usuario',
-      lastName: 'Demo',
-      userType: 'Operador',
-      rememberMe: rememberMe.value
+      firstName: 'Administrator',
+      lastName: 'Movesys',
+      userType: 'Administrator'
     }
     
     localStorage.setItem('movesys_token', token)
     localStorage.setItem('movesys_user', JSON.stringify(userData))
     
-    console.log('💾 Datos guardados en localStorage:', { token, userData })
+    console.log('💾 Data saved to localStorage:', { token, userData })
 
-    // Ir al dashboard
-    console.log(' Redirigiendo al dashboard...')
+    // Go to dashboard
+    console.log(' Redirecting to dashboard...')
     await router.push('/dashboard')
-    console.log(' Redirección completada')
+    console.log(' Redirection completed')
     
   } catch (error) {
-    console.error(' Error en el login:', error)
-    alert('Error en el login. Intente nuevamente.')
+    console.error(' Login error:', error)
+    alert(t('auth.loginError'))
   } finally {
     loading.value = false
   }
 }
 
-const goToRegister = () => {
-  router.push('/register')
-}
 </script>
 
 <template>
@@ -95,11 +102,17 @@ const goToRegister = () => {
         <template #header>
           <div class="login-header">
             <img src="../../../../../public/images/logo.png" height="184" width="679" class="logo-img"/>
-            <h2 class="login-title">Sign up</h2>
+            <h2 class="login-title">{{ t('auth.loginTitle') }}</h2>
           </div>
         </template>
 
         <template #content>
+          <div class="credentials-info">
+            <p class="info-text">
+              <i class="pi pi-info-circle"></i>
+              {{ t('auth.usePredefinedCredentials') }}
+            </p>
+          </div>
           <form @submit.prevent="handleLogin" class="login-form">
             <!-- Email Field -->
             <div class="input-group">
@@ -112,7 +125,7 @@ const goToRegister = () => {
                 />
                 <label for="email">
                   <i class="pi pi-envelope"></i>
-                  Correo Electrónico
+                  {{ t('auth.email') }}
                 </label>
               </pv-float-label>
               <small v-if="emailError" class="p-error">
@@ -133,7 +146,7 @@ const goToRegister = () => {
                 />
                 <label for="password">
                   <i class="pi pi-lock"></i>
-                  Contraseña
+                  {{ t('auth.password') }}
                 </label>
               </pv-float-label>
               <small v-if="passwordError" class="p-error">
@@ -142,38 +155,15 @@ const goToRegister = () => {
               </small>
             </div>
 
-            <!-- Remember Me -->
-            <div class="remember-section">
-              <pv-checkbox 
-                v-model="rememberMe" 
-                input-id="remember"
-                binary
-              />
-              <label for="remember" class="remember-label">Recordarme</label>
-            </div>
-
             <!-- Submit Button -->
             <pv-button 
               type="submit"
-              label="Iniciar Sesión"
+              :label="t('auth.login')"
               icon="pi pi-sign-in"
               :loading="loading"
               :disabled="!isFormValid"
               class="login-button"
             />
-
-            <!-- Register Link -->
-            <div class="register-section">
-              <p class="register-text">¿No tienes una cuenta?</p>
-              <pv-button 
-                type="button"
-                label="Crear cuenta nueva"
-                icon="pi pi-user-plus"
-                text
-                @click="goToRegister"
-                class="register-button"
-              />
-            </div>
           </form>
         </template>
       </pv-card>
@@ -248,6 +238,27 @@ const goToRegister = () => {
   font-weight: 700;
   color: #6366f1;
   margin: 0;
+}
+
+.credentials-info {
+  background: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.info-text {
+  color: #0369a1;
+  font-size: 0.875rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-text i {
+  color: #0ea5e9;
 }
 
 .login-form {
@@ -326,37 +337,6 @@ const goToRegister = () => {
   gap: 0.25rem;
 }
 
-.remember-section {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-:deep(.p-checkbox) {
-  margin-right: 0.5rem;
-}
-
-:deep( .p-button .login-button){
-  background-color: #7184c4;
-}
-
-:deep(.p-checkbox .p-checkbox-box) {
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid #d1d5db;
-  border-radius: 0.25rem;
-}
-
-:deep(.p-checkbox .p-checkbox-box.p-highlight) {
-  background: #6366f1;
-  border-color: #6366f1;
-}
-
-.remember-label {
-  font-size: 0.875rem;
-  color: #6b7280;
-  cursor: pointer;
-}
 
 :deep(.login-button) {
   width: 100%;
@@ -380,31 +360,6 @@ const goToRegister = () => {
   cursor: not-allowed;
 }
 
-.register-section {
-  text-align: center;
-  padding-top: 1rem;
-  border-top: 1px solid #e5e7eb;
-}
-
-.register-text {
-  color: #6b7280;
-  font-size: 0.875rem;
-  margin: 0 0 0.5rem 0;
-}
-
-:deep(.register-button) {
-  color: #6366f1;
-  font-weight: 600;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  transition: color 0.3s ease;
-  margin: 0 auto;
-}
-
-:deep(.register-button:hover) {
-  color: #4f46e5;
-  background: #f8fafc;
-}
 
 @media (max-width: 640px) {
   .login-container {

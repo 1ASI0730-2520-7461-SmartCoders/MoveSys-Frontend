@@ -20,11 +20,11 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { locale } = useI18n()
-const currentLanguage = ref('es')
+const currentLanguage = ref('en')
 
 onMounted(() => {
-  // Cargar idioma guardado o usar español por defecto
-  const savedLanguage = localStorage.getItem('movesys_language') || 'es'
+  // Cargar idioma guardado o usar inglés por defecto
+  const savedLanguage = localStorage.getItem('movesys_language') || 'en'
   currentLanguage.value = savedLanguage
   locale.value = savedLanguage
 })

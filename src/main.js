@@ -8,6 +8,7 @@ import PrimeVue from 'primevue/config';
 import Material from '@primeuix/themes/material';
 import {
     Button,
+    Calendar,
     Card,
     Checkbox,
     Column,
@@ -28,6 +29,7 @@ createApp(App)
     .use(DialogService)
     .use(ToastService)
     .component('pv-button', Button)
+    .component('pv-calendar', Calendar)
     .component('pv-card', Card)
     .component('pv-column', Column)
     .component('pv-confirm-dialog', ConfirmDialog)

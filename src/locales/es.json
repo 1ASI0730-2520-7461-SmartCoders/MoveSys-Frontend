@@ -8,11 +8,30 @@
     "register": "Registrarse",
     "email": "Correo Electrónico",
     "password": "Contraseña",
-    "rememberMe": "Recordarme"
+    "rememberMe": "Recordarme",
+    "loginTitle": "Iniciar Sesión",
+    "emailRequired": "El correo es requerido",
+    "validEmail": "Ingrese un correo válido",
+    "passwordRequired": "La contraseña es requerida",
+    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+    "invalidCredentials": "Credenciales incorrectas",
+    "loginError": "Error en el login. Intente nuevamente.",
+    "usePredefinedCredentials": "Use las credenciales predefinidas para acceder"
   },
   "dashboard": {
     "title": "Panel de Control",
-    "welcome": "Bienvenido a MoveSys"
+    "welcome": "Bienvenido a MoveSys",
+    "quickAccess": "Accesos rápidos",
+    "usersDescription": "Gestiona usuarios del sistema",
+    "deliveriesDescription": "Administra las entregas",
+    "fleetDescription": "Controla vehículos y conductores",
+    "fuelDescription": "Registra y analiza combustible",
+    "reportsDescription": "Visualiza estadísticas y métricas",
+    "goToUsers": "Ir a Usuarios",
+    "goToDeliveries": "Ir a Entregas",
+    "goToFleet": "Ir a Flota",
+    "goToFuel": "Ir a Combustible",
+    "goToReports": "Ir a Reportes"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -22,6 +41,264 @@
     "fuelConsumption": "Combustible",
     "reports": "Reportes",
     "logout": "Salir"
+  },
+  "common": {
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "add": "Agregar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "actions": "Acciones",
+    "loading": "Cargando...",
+    "noData": "No hay datos disponibles",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No",
+    "assignDriver": "Asignar Conductor",
+    "remove": "Eliminar",
+    "back": "Volver",
+    "create": "Crear",
+    "update": "Actualizar",
+    "required": "Requerido",
+    "optional": "Opcional"
+  },
+  "forms": {
+    "validation": {
+      "firstNameRequired": "El nombre es requerido",
+      "lastNameRequired": "El apellido es requerido",
+      "dniRequired": "El DNI es requerido",
+      "phoneRequired": "El teléfono es requerido",
+      "firstNameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "lastNameMinLength": "El apellido debe tener al menos 2 caracteres",
+      "dniMinLength": "El DNI debe tener al menos 7 caracteres",
+      "phoneValid": "Por favor ingrese un número de teléfono válido",
+      "codeRequired": "El código es requerido",
+      "customerNameRequired": "El nombre del cliente es requerido",
+      "customerNameMinLength": "El nombre del cliente debe tener al menos 3 caracteres",
+      "addressRequired": "La dirección es requerida"
+    },
+    "user": {
+      "newUser": "Nuevo Usuario",
+      "editUser": "Editar Usuario",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "dni": "DNI",
+      "phone": "Teléfono",
+      "role": "Rol",
+      "status": "Estado",
+      "roleOptions": {
+        "driver": "Conductor",
+        "admin": "Administrador",
+        "operator": "Operador"
+      },
+      "statusOptions": {
+        "active": "Activo",
+        "inactive": "Inactivo",
+        "suspended": "Suspendido"
+      }
+    },
+    "delivery": {
+      "title": "Entrega",
+      "newDelivery": "Nueva Entrega",
+      "editDelivery": "Editar Entrega",
+      "deliveryCode": "Código de Entrega",
+      "customerName": "Nombre del Cliente",
+      "address": "Dirección",
+      "originProvince": "Provincia de Origen",
+      "destinationProvince": "Provincia de Destino",
+      "status": "Estado",
+      "driver": "Conductor",
+      "vehicle": "Vehículo",
+      "distance": "Distancia (km)",
+      "eta": "ETA (horas)",
+      "assignedDriver": "Conductor Asignado",
+      "assignedVehicle": "Vehículo Asignado",
+      "statusOptions": {
+        "pending": "Pendiente",
+        "inProgress": "En Proceso",
+        "completed": "Completada",
+        "cancelled": "Cancelada"
+      }
+    },
+    "vehicle": {
+      "title": "Vehículo",
+      "newVehicle": "Nuevo Vehículo",
+      "editVehicle": "Editar Vehículo",
+      "licensePlate": "Patente",
+      "brand": "Marca",
+      "model": "Modelo",
+      "year": "Año",
+      "color": "Color",
+      "type": "Tipo",
+      "capacity": "Capacidad (kg)",
+      "mileage": "Kilometraje (km)",
+      "fuelType": "Tipo de Combustible",
+      "status": "Estado",
+      "typeOptions": {
+        "truck": "Camión",
+        "van": "Furgoneta",
+        "car": "Automóvil",
+        "motorcycle": "Motocicleta",
+        "trailer": "Remolque"
+      },
+      "fuelTypeOptions": {
+        "diesel": "Diesel",
+        "gasoline": "Gasolina",
+        "gas": "Gas"
+      },
+      "statusOptions": {
+        "available": "Disponible",
+        "inUse": "En Uso",
+        "maintenance": "Mantenimiento",
+        "outOfService": "Fuera de Servicio"
+      }
+    },
+    "user": {
+      "title": "Usuario",
+      "newUser": "Nuevo Usuario",
+      "editUser": "Editar Usuario",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "dni": "DNI",
+      "phoneNumber": "Teléfono",
+      "role": "Cargo",
+      "status": "Estado",
+      "roleOptions": {
+        "driver": "Conductor",
+        "admin": "Administrador",
+        "operator": "Operador"
+      },
+      "statusOptions": {
+        "active": "Activo",
+        "inactive": "Inactivo",
+        "suspended": "Suspendido"
+      }
+    },
+    "validation": {
+      "codeRequired": "Código requerido",
+      "customerNameRequired": "Nombre del cliente requerido",
+      "addressRequired": "Dirección requerida",
+      "originProvinceRequired": "Provincia de origen requerida",
+      "destinationProvinceRequired": "Provincia de destino requerida",
+      "licensePlateRequired": "Patente requerida",
+      "brandRequired": "Marca requerida",
+      "modelRequired": "Modelo requerido",
+      "yearRequired": "Año requerido",
+      "firstNameRequired": "Nombre requerido",
+      "lastNameRequired": "Apellido requerido",
+      "dniRequired": "DNI requerido",
+      "phoneRequired": "Teléfono requerido",
+      "firstNameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "lastNameMinLength": "El apellido debe tener al menos 2 caracteres",
+      "dniMinLength": "El DNI debe tener al menos 6 caracteres",
+      "phoneValid": "El teléfono debe ser válido"
+    }
+  },
+  "reporting": {
+    "title": "Centro de Control Operacional",
+    "allLevels": "Todos los niveles",
+    "low": "Bajo",
+    "medium": "Medio",
+    "high": "Alto",
+    "searchDriver": "Nombre del chofer..."
+  },
+  "users": {
+    "title": "Gestión de Usuarios",
+    "subtitle": "Administra los usuarios del sistema",
+    "newUser": "Nuevo Usuario",
+    "userList": "Lista de Usuarios",
+    "usersFound": "{count} usuarios encontrados",
+    "clearFilters": "Limpiar Filtros",
+    "activate": "Activar",
+    "deactivate": "Desactivar",
+    "fixed": "fijo",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar al usuario {name}?",
+    "confirmDeleteHeader": "Confirmar eliminación",
+    "search": {
+      "placeholder": "Buscar usuarios..."
+    },
+    "filters": {
+      "role": "Filtrar por rol",
+      "status": "Filtrar por estado"
+    },
+    "stats": {
+      "total": "Total Usuarios",
+      "active": "Activos",
+      "inactive": "Inactivos",
+      "filtered": "Filtrados"
+    },
+    "table": {
+      "id": "ID",
+      "fullName": "Nombre Completo",
+      "phone": "Teléfono",
+      "dni": "DNI",
+      "role": "Cargo",
+      "status": "Estado"
+    },
+    "export": {
+      "button": "Exportar",
+      "filename": "usuarios.csv",
+      "id": "ID",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Email",
+      "phone": "Teléfono",
+      "role": "Rol",
+      "status": "Estado"
+    }
+  },
+  "fleet": {
+    "title": "Gestión de Flota",
+    "newVehicle": "Nuevo Vehículo",
+    "assignDriver": "Asignar Conductor",
+    "vehicle": "Vehículo",
+    "selectDriver": "Selecciona un conductor",
+    "unassigned": "Sin asignar",
+    "table": {
+      "licensePlate": "Placa",
+      "model": "Modelo",
+      "status": "Estado",
+      "driver": "Conductor",
+      "mileage": "Kilometraje"
+    }
+  },
+  "reports": {
+    "title": "Reportes y Eficiencia",
+    "deliverySummary": "Resumen de Entregas",
+    "noDeliveries": "Sin entregas",
+    "unassigned": "Sin asignar",
+    "table": {
+      "code": "Código",
+      "driver": "Conductor",
+      "vehicle": "Vehículo",
+      "distance": "Distancia (km)",
+      "status": "Estado"
+    }
+  },
+  "deliveries": {
+    "title": "Entregas",
+    "newDelivery": "Nueva Entrega",
+    "unassigned": "Sin asignar",
+    "assignedVehicle": "Vehículo asignado",
+    "noVehiclesWithDrivers": "No hay vehículos con conductor asignado. Ve a Gestión de Flota para asignar conductores.",
+    "table": {
+      "code": "Código",
+      "origin": "Origen",
+      "destination": "Destino",
+      "driver": "Conductor",
+      "vehicle": "Vehículo",
+      "distance": "Distancia (km)",
+      "eta": "ETA (h)",
+      "status": "Estado",
+      "assignment": "Asignación"
+    },
+    "assignment": {
+      "complete": "Completa",
+      "partial": "Parcial",
+      "unassigned": "Sin asignar"
+    }
   }
 }
 
