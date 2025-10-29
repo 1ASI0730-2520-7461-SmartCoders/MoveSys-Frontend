@@ -39,7 +39,7 @@ export class UserAssembler {
 
   static toCreateResource(user) {
     const resource = this.toResource(user);
-    delete resource.id; // Remove ID for creation
+    delete resource.id;
     return resource;
   }
 

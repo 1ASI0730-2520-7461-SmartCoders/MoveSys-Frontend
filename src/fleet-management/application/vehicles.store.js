@@ -106,7 +106,6 @@ export const useVehiclesStore = defineStore('vehicles', () => {
       notificationService.success('Conductor asignado');
       return updated;
     } catch (error) {
-      // Fallback: si PATCH falla (p. ej. por CORS/network), intentar PUT con el recurso completo
       try {
         const current = vehicles.value.find(v => v.id === id);
         if (!current) throw error;

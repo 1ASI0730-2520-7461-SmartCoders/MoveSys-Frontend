@@ -33,7 +33,6 @@ export class StorageService {
     }
   }
 
-  // Métodos específicos para la aplicación
   static setToken(token) {
     this.setItem('movesys_token', token);
   }

@@ -23,7 +23,6 @@ const defaultAvatar = '/images/default-user.svg'
 
 const onLanguageChanged = (language) => {
   console.log('Language changed to:', language)
-  // Here you can add additional logic if necessary
 }
 
 const openSettings = () => {
@@ -48,7 +47,6 @@ const handleLogout = () => {
   showUserMenu.value = false
 }
 
-// Close menu when clicking outside
 import { onMounted, onUnmounted } from 'vue'
 
 const handleClickOutside = (event) => {

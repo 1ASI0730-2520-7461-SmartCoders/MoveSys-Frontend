@@ -1,9 +1,10 @@
 <script setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useVehiclesStore } from '../../application/vehicles.store.js'
 import { useUsersStore } from '../../../ user-management/application/users.store.js'
+import { useMaintenanceStore } from '../../../maintenance-management/application/maintenance.store.js'
 import { ValidationService } from '../../../shared/infrastructure/validation.service.js'
 
 const { t } = useI18n()
@@ -11,6 +12,37 @@ const { t } = useI18n()
 const router = useRouter()
 const store = useVehiclesStore()
 const usersStore = useUsersStore()
+const maintenanceStore = useMaintenanceStore()
+
+const vehiclesWithMaintenanceStatus = computed(() => {
+  return store.filteredVehicles.map(vehicle => {
+    const maintenanceInProgress = maintenanceStore.records.find(m => 
+      m.vehiclePlate === vehicle.licensePlate && 
+      m.status === 'in_progress'
+    )
+    
+    if (maintenanceInProgress) {
+      return {
+        ...vehicle,
+        status: 'maintenance',
+        isInMaintenanceProgress: true
+      }
+    }
+    
+    if (vehicle.currentDriver && vehicle.currentDriver !== 'Unassigned' && vehicle.currentDriver !== 'null' && vehicle.currentDriver !== null) {
+      return {
+        ...vehicle,
+        status: 'in_use',
+        isInMaintenanceProgress: false
+      }
+    }
+    
+    return {
+      ...vehicle,
+      isInMaintenanceProgress: false
+    }
+  })
+})
 
 const dialogVisible = ref(false)
 const editMode = ref(false)
@@ -52,8 +84,6 @@ const save = async () => {
     }
     dialogVisible.value = false
   } catch (error) {
-    // Error is already handled by the store and notification service
-    // Just log it for debugging purposes
     console.error('Error saving vehicle:', error)
   }
 }
@@ -63,7 +93,41 @@ onMounted(() => {
   if (!usersStore.users?.length) {
     usersStore.fetchUsers()
   }
+  maintenanceStore.fetchRecords()
 })
+
+watch(() => maintenanceStore.records, () => {
+}, { deep: true })
+
+const getStatusDisplayName = (data) => {
+  if (data.isInMaintenanceProgress) return 'En Mantenimiento'
+  
+  if (data.currentDriver && data.currentDriver !== 'Unassigned' && data.currentDriver !== null && data.currentDriver !== 'null') {
+    return 'En Uso'
+  }
+  
+  if (data.status === 'in_use') return 'En Uso'
+  if (data.status === 'maintenance') return 'En Mantenimiento'
+  if (data.status === 'available') return 'Disponible'
+  if (data.status === 'out_of_service') return 'Fuera de Servicio'
+  
+  return data.statusDisplayName || 'Disponible'
+}
+
+const getStatusSeverity = (data) => {
+  if (data.isInMaintenanceProgress) return 'warning'
+  
+  if (data.currentDriver && data.currentDriver !== 'Unassigned' && data.currentDriver !== null && data.currentDriver !== 'null') {
+    return 'info'
+  }
+  
+  if (data.status === 'in_use') return 'info'
+  if (data.status === 'maintenance') return 'warning'
+  if (data.status === 'available') return 'success'
+  if (data.status === 'out_of_service') return 'danger'
+  
+  return 'secondary'
+}
 
 const assignDialogVisible = ref(false)
 const selectedVehicle = ref(null)
@@ -88,8 +152,6 @@ const saveAssignDriver = async () => {
     await store.assignDriver(selectedVehicle.value.id, selectedDriver.value)
     assignDialogVisible.value = false
   } catch (error) {
-    // Error is already handled by the store and notification service
-    // Just log it for debugging purposes
     console.error('Error assigning driver:', error)
   }
 }
@@ -104,12 +166,15 @@ const saveAssignDriver = async () => {
 
 
     <div class="card">
-      <pv-data-table :value="store.filteredVehicles" :loading="store.loading" paginator :rows="10" :rows-per-page-options="[5,10,20]">
+      <pv-data-table :value="vehiclesWithMaintenanceStatus" :loading="store.loading" paginator :rows="10" :rows-per-page-options="[5,10,20]">
         <pv-column field="licensePlate" :header="t('fleet.table.licensePlate')" sortable />
         <pv-column field="model" :header="t('fleet.table.model')" sortable />
         <pv-column field="status" :header="t('fleet.table.status')" sortable>
           <template #body="{ data }">
-            <pv-tag :value="data.statusDisplayName" :severity="data.isInUse ? 'warning' : (data.isAvailable ? 'success' : 'secondary')" />
+            <pv-tag 
+              :value="getStatusDisplayName(data)" 
+              :severity="getStatusSeverity(data)" 
+            />
           </template>
         </pv-column>
         <pv-column field="currentDriver" :header="t('fleet.table.driver')">

@@ -166,10 +166,8 @@ const handleRegister = async () => {
   loading.value = true
   
   try {
-    // Simular registro
     await new Promise(resolve => setTimeout(resolve, 1500))
     
-    // Guardar usuario en localStorage
     const newUser = {
       id: Date.now(),
       userType: userType.value,
@@ -186,7 +184,6 @@ const handleRegister = async () => {
     
     alert(`¡Cuenta de ${userType.value} creada exitosamente!\nUsuario: ${newUser.firstName} ${newUser.lastName}`)
     
-    // Reset form
     userType.value = ''
     firstName.value = ''
     lastName.value = ''
@@ -194,7 +191,6 @@ const handleRegister = async () => {
     password.value = ''
     acceptTerms.value = false
     
-    // Ir al login
     setTimeout(() => {
       router.push('/login')
     }, 1000)

@@ -73,7 +73,6 @@ onMounted(() => {
   const userId = route.params.id
   if (userId) {
     editMode.value = true
-    // Load user data for editing
     const user = store.users.find(u => u.id == userId)
     if (user) {
       form.value = {

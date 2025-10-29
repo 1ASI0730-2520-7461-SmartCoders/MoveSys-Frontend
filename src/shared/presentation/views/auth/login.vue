@@ -48,7 +48,6 @@ const handleLogin = async () => {
     return
   }
 
-  // Validate fixed credentials
   const validEmail = 'admin@movesys.com'
   const validPassword = '123456'
 
@@ -62,11 +61,9 @@ const handleLogin = async () => {
   loading.value = true
 
   try {
-    // Simulate login
     console.log('⏳ Simulating login...')
     await new Promise(resolve => setTimeout(resolve, 1000))
 
-    // Save data to localStorage
     const token = 'demo-token-' + Date.now()
     const userData = {
       email: email.value,
@@ -80,7 +77,6 @@ const handleLogin = async () => {
     
     console.log('💾 Data saved to localStorage:', { token, userData })
 
-    // Go to dashboard
     console.log(' Redirecting to dashboard...')
     await router.push('/dashboard')
     console.log(' Redirection completed')

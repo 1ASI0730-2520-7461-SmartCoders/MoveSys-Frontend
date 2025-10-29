@@ -6,10 +6,12 @@ export class FuelEntryAssembler {
       id: resource.id,
       vehicleId: resource.vehicle_id || resource.vehicleId,
       vehiclePlate: resource.vehicle_plate || resource.vehiclePlate,
+      model: resource.model,
       liters: resource.liters,
-      cost: resource.cost,
+      costPerLiter: resource.cost_per_liter || resource.costPerLiter,
+      totalPaid: resource.total_paid || resource.totalPaid,
       fuelType: resource.fuel_type || resource.fuelType,
-      station: resource.station,
+      provider: resource.provider,
       filledAt: resource.filled_at || resource.filledAt,
       odometer: resource.odometer,
       notes: resource.notes,
@@ -24,10 +26,13 @@ export class FuelEntryAssembler {
   static toCreateResource(entity) {
     return {
       vehicle_id: entity.vehicleId,
+      vehicle_plate: entity.vehiclePlate,
+      model: entity.model,
       liters: entity.liters,
-      cost: entity.cost,
+      cost_per_liter: entity.costPerLiter,
+      total_paid: entity.totalPaid,
       fuel_type: entity.fuelType,
-      station: entity.station,
+      provider: entity.provider,
       filled_at: entity.filledAt,
       odometer: entity.odometer,
       notes: entity.notes,
@@ -38,6 +43,9 @@ export class FuelEntryAssembler {
     return this.toCreateResource(entity);
   }
 }
+
+
+
 
 
 

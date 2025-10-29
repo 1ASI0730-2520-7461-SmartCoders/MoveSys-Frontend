@@ -16,7 +16,6 @@ const emit = defineEmits(['toggle', 'navigate'])
 
 const route = useRoute()
 
-// Data structure for navigation buttons
 const menuItems = computed(() => [
   {
     label: t('navigation.dashboard'),
@@ -38,11 +37,16 @@ const menuItems = computed(() => [
     icon: 'pi pi-car',
     route: '/fleet-management'
   },
-  // {
-  //   label: t('navigation.fuelConsumption'),
-  //   icon: 'pi pi-car',
-  //   route: '/fuel-consumption'
-  // },
+  {
+    label: t('navigation.fuelConsumption'),
+    icon: 'pi pi-bolt',
+    route: '/fuel-consumption'
+  },
+  {
+    label: t('navigation.maintenance'),
+    icon: 'pi pi-wrench',
+    route: '/maintenance'
+  },
   {
     label: t('navigation.reports'),
     icon: 'pi pi-chart-bar',
@@ -50,7 +54,6 @@ const menuItems = computed(() => [
   }
 ])
 
-// Original model for pv-menu (maintained for compatibility)
 const menuModel = ref([
   {
     label: t('navigation.dashboard'),
@@ -80,13 +83,20 @@ const menuModel = ref([
     class: () => route.path === '/fleet-management' ? 'active-menu-item' : '',
     style: () => route.path === '/fleet-management' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
   },
-  // {
-  //   label: t('navigation.fuelConsumption'),
-  //   icon: 'pi pi-car',
-  //   command: () => navigateTo('/fuel-consumption'),
-  //   class: () => route.path === '/fuel-consumption' ? 'active-menu-item' : '',
-  //   style: () => route.path === '/fuel-consumption' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
-  // },
+  {
+    label: t('navigation.fuelConsumption'),
+    icon: 'pi pi-fire',
+    command: () => navigateTo('/fuel-consumption'),
+    class: () => route.path === '/fuel-consumption' ? 'active-menu-item' : '',
+    style: () => route.path === '/fuel-consumption' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
+  },
+  {
+    label: 'Mantenimiento',
+    icon: 'pi pi-wrench',
+    command: () => navigateTo('/maintenance'),
+    class: () => route.path === '/maintenance' ? 'active-menu-item' : '',
+    style: () => route.path === '/maintenance' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
+  },
   {
     label: t('navigation.reports'),
     icon: 'pi pi-chart-bar',
@@ -100,17 +110,14 @@ const navigateTo = (routePath) => {
   emit('navigate', routePath)
 }
 
-// Function to check if a route is active
 const isActiveRoute = (routePath) => {
   return route.path === routePath
 }
 
 const handleLogout = () => {
-  // Clear session data
   localStorage.removeItem('movesys_token')
   localStorage.removeItem('movesys_user')
   
-  // Redirect to login
   emit('navigate', '/login')
 }
 </script>
@@ -414,7 +421,7 @@ const handleLogout = () => {
 
 :deep(.logout-button .p-button-label) {
   font-size: 14px;
-  color: #1598b8 !important;
+  color: #1f2937 !important;
 }
 
 /* Responsive */

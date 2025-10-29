@@ -1,15 +1,6 @@
 {
   "users": [
     {
-      "first_name": "d",
-      "last_name": "df",
-      "dni": "434",
-      "phone_number": "3434",
-      "role": "driver",
-      "status": "active",
-      "id": 1
-    },
-    {
       "first_name": "Carlos",
       "last_name": "Ramírez",
       "dni": "74859612",
@@ -62,6 +53,15 @@
       "role": "driver",
       "status": "active",
       "id": 7
+    },
+    {
+      "first_name": "Alejandro",
+      "last_name": "Gómez Herrera",
+      "dni": "73574377",
+      "phone_number": "967701724",
+      "role": "driver",
+      "status": "active",
+      "id": 8
     }
   ],
   "vehicles": [
@@ -176,6 +176,22 @@
       "next_maintenance": null,
       "mileage": 1800,
       "id": 7
+    },
+    {
+      "license_plate": "LMP-126",
+      "brand": "Volvo",
+      "model": "FH 540",
+      "year": 2023,
+      "color": "Rojo",
+      "type": "truck",
+      "capacity": 25000,
+      "fuel_type": "gasoline",
+      "status": "in_use",
+      "current_driver": "Alejandro Gómez Herrera",
+      "last_maintenance": null,
+      "next_maintenance": null,
+      "mileage": 5000,
+      "id": 8
     }
   ],
   "deliveries": [
@@ -206,7 +222,70 @@
       "distance_km": 389,
       "eta_minutes": 7,
       "id": 2
+    },
+    {
+      "code": "DEL-003",
+      "customerName": "Distribuidora \"El Sol\"",
+      "address": "Av. Los Álamos 456",
+      "origin_province": "Lima",
+      "destination_province": "Trujillo",
+      "scheduledAt": null,
+      "status": "pending",
+      "vehicleId": null,
+      "vehicle_plate": "LMP-126",
+      "distance_km": 560,
+      "eta_minutes": 4,
+      "id": 3
     }
   ],
-  "fuel-entries": []
+  "fuel-entries": [
+    {
+      "vehicle_id": 2,
+      "vehicle_plate": "BDF-245",
+      "model": "Scania R450",
+      "liters": 14,
+      "cost_per_liter": 20,
+      "total_paid": 280,
+      "fuel_type": "diesel",
+      "provider": "Sercor ",
+      "filled_at": "2025-10-31",
+      "odometer": 1400,
+      "notes": "",
+      "id": 1
+    },
+    {
+      "vehicle_id": 8,
+      "vehicle_plate": "LMP-126",
+      "model": "Volvo FH 540",
+      "liters": 70,
+      "cost_per_liter": 60,
+      "total_paid": 4200,
+      "fuel_type": "electric",
+      "provider": "Backus ",
+      "filled_at": "2025-10-14T05:00:00.000Z",
+      "odometer": 5000,
+      "notes": "",
+      "id": 2
+    }
+  ],
+  "maintenances": [
+    {
+      "vehicle_id": 8,
+      "vehicle_plate": "LMP-126",
+      "model": "Volvo FH 540",
+      "maintenance_type": "corrective",
+      "description": "Rutina il",
+      "cost": 600,
+      "mileage": 5000,
+      "maintenance_date": "2025-10-14",
+      "next_maintenance_date": "2025-10-27",
+      "next_maintenance_mileage": null,
+      "provider": "Tecn  Io ",
+      "parts": [],
+      "mechanic": "",
+      "notes": "",
+      "status": "in_progress",
+      "id": 1
+    }
+  ]
 }

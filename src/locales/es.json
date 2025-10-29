@@ -26,11 +26,13 @@
     "deliveriesDescription": "Administra las entregas",
     "fleetDescription": "Controla vehículos y conductores",
     "fuelDescription": "Registra y analiza combustible",
+    "maintenanceDescription": "Gestiona los mantenimientos de vehículos",
     "reportsDescription": "Visualiza estadísticas y métricas",
     "goToUsers": "Ir a Usuarios",
     "goToDeliveries": "Ir a Entregas",
     "goToFleet": "Ir a Flota",
     "goToFuel": "Ir a Combustible",
+    "goToMaintenance": "Ir a Mantenimiento",
     "goToReports": "Ir a Reportes"
   },
   "navigation": {
@@ -38,7 +40,8 @@
     "deliveries": "Entregas",
     "users": "Usuarios",
     "fleetManagement": "Gestión de Flota",
-    "fuelConsumption": "Combustible",
+    "fuelConsumption": "Consumo de Combustible",
+    "maintenance": "Mantenimiento",
     "reports": "Reportes",
     "logout": "Salir"
   },
@@ -267,14 +270,73 @@
   "reports": {
     "title": "Reportes y Eficiencia",
     "deliverySummary": "Resumen de Entregas",
+    "completeOperationsSummary": "Resumen Completo de Operaciones",
     "noDeliveries": "Sin entregas",
+    "noDataAvailable": "No hay datos disponibles",
     "unassigned": "Sin asignar",
     "table": {
       "code": "Código",
       "driver": "Conductor",
       "vehicle": "Vehículo",
       "distance": "Distancia (km)",
-      "status": "Estado"
+      "status": "Estado",
+      "deliveryCode": "Código Entrega",
+      "client": "Cliente",
+      "origin": "Origen",
+      "destination": "Destino",
+      "vehicleHeader": "Vehículo",
+      "mileage": "Kilometraje",
+      "driverHeader": "Conductor",
+      "driverPhone": "Teléfono Conductor",
+      "fuelLiters": "Combustible (L)",
+      "maintenanceCost": "Costo Mantenimiento",
+      "maintenances": "Mantenimientos",
+      "lastMaintenance": "Último Mantenimiento"
+    }
+  },
+  "maintenance": {
+    "title": "Gestión de Mantenimiento",
+    "newMaintenance": "Nuevo Mantenimiento",
+    "maintenanceRecords": "Registros de Mantenimiento",
+    "table": {
+      "vehicle": "Vehículo",
+      "type": "Tipo",
+      "description": "Descripción",
+      "cost": "Costo (S/.)",
+      "date": "Fecha",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "types": {
+      "preventive": "Preventivo",
+      "corrective": "Correctivo",
+      "emergency": "Emergencia"
+    },
+    "statuses": {
+      "scheduled": "Programado",
+      "inProgress": "En Progreso",
+      "completed": "Completado",
+      "cancelled": "Cancelado"
+    },
+    "form": {
+      "vehicle": "Vehículo",
+      "selectVehicle": "Seleccione un vehículo",
+      "vehiclePlate": "Patente del Vehículo",
+      "maintenanceType": "Tipo de Mantenimiento",
+      "status": "Estado",
+      "description": "Descripción",
+      "cost": "Costo (S/.)",
+      "mileage": "Kilometraje (km)",
+      "maintenanceDate": "Fecha de Mantenimiento",
+      "nextMaintenanceDate": "Próximo Mantenimiento",
+      "provider": "Proveedor/Taller",
+      "mechanic": "Mecánico",
+      "parts": "Repuestos",
+      "addPart": "Agregar Repuesto",
+      "partName": "Nombre del repuesto",
+      "quantity": "Cantidad",
+      "partCost": "Costo",
+      "notes": "Notas Adicionales"
     }
   },
   "deliveries": {
@@ -298,6 +360,50 @@
       "complete": "Completa",
       "partial": "Parcial",
       "unassigned": "Sin asignar"
+    }
+  },
+  "fuel": {
+    "newEntry": "Nueva Carga",
+    "records": "Registros de Combustible",
+    "types": {
+      "diesel": "Diésel B5",
+      "gasoline": "Gasolina Premium",
+      "gasolineRegular": "Gasolina Regular",
+      "gnc": "GNC"
+    },
+    "table": {
+      "vehiclePlate": "Placa del Vehículo",
+      "fuelType": "Tipo de Combustible",
+      "quantity": "Cantidad Cargada (L)",
+      "costPerLiter": "Costo por litro (S/.)",
+      "totalPaid": "Total Pagado (S/.)",
+      "provider": "Proveedor",
+      "date": "Fecha",
+      "actions": "Acciones"
+    },
+    "form": {
+      "newTitle": "Nuevo Registro de Combustible",
+      "title": "Registro de Combustible",
+      "vehicle": "Vehículo",
+      "selectVehicle": "Seleccione un vehículo",
+      "fuelType": "Tipo de Combustible",
+      "quantity": "Cantidad Cargada (L)",
+      "costPerLiter": "Costo por Litro (S/.)",
+      "totalPaid": "Total Pagado (S/.)",
+      "provider": "Proveedor",
+      "providerPlaceholder": "Nombre del proveedor o estación",
+      "filledAt": "Fecha de Carga",
+      "selectDate": "Seleccione fecha",
+      "odometer": "Kilometraje",
+      "notes": "Notas",
+      "notesPlaceholder": "Notas adicionales",
+      "create": "Crear",
+      "types": {
+        "diesel": "Diésel",
+        "gasoline": "Gasolina",
+        "electric": "Eléctrico",
+        "hybrid": "Híbrido"
+      }
     }
   }
 }

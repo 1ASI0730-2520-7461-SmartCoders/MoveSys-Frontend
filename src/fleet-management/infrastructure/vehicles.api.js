@@ -64,7 +64,6 @@ export class VehiclesApi extends BaseApi {
       });
       return VehicleAssembler.toEntityFromResource(response.data);
     } catch (error) {
-      // Fallback PUT completo para compatibilidad
       const getResp = await this.#vehiclesEndpoint.getById(id);
       const resource = getResp.data;
       const merged = { ...resource, current_driver: driverName, status: 'in_use' };

@@ -52,7 +52,7 @@ export class VehicleAssembler {
 
   static toCreateResource(vehicle) {
     const resource = this.toResource(vehicle);
-    delete resource.id; // Remove ID for creation
+    delete resource.id;
     return resource;
   }
 

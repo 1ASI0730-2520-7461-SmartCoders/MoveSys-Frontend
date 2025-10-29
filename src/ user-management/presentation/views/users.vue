@@ -35,13 +35,11 @@ const {
 
 const confirm = useConfirm()
 
-// Dialog states
 const dialogVisible = ref(false)
 const editMode = ref(false)
 const form = ref(new User({}))
 const formErrors = ref({})
 
-// Form validation rules
 const validationRules = {
   firstName: [
     { required: true, message: t('forms.validation.firstNameRequired') },
@@ -66,7 +64,6 @@ onMounted(() => {
   if (!users.length) fetchUsers()
 })
 
-// Watch for search query changes
 watch(searchQuery, (newQuery) => {
   if (newQuery) {
     searchUsers(newQuery)
@@ -118,29 +115,6 @@ const toggleUserStatus = async (user) => {
   await updateUserStatus(user.id, newStatus)
 }
 
-const exportUsers = () => {
-  const csvContent = [
-    [t('users.export.id'), t('users.export.firstName'), t('users.export.lastName'), t('users.export.email'), t('users.export.phone'), t('users.export.role'), t('users.export.status')],
-    ...filteredUsers.value.map(user => [
-      user.id,
-      user.firstName,
-      user.lastName,
-      user.email,
-      user.phoneNumber,
-      user.roleDisplayName,
-      user.status
-    ])
-  ].map(row => row.join(',')).join('\n')
-
-  const blob = new Blob([csvContent], { type: 'text/csv' })
-  const url = window.URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = t('users.export.filename')
-  a.click()
-  window.URL.revokeObjectURL(url)
-}
-
 const getStatusSeverity = (status) => {
   const severities = {
     'active': 'success',
@@ -168,20 +142,11 @@ const getStatusLabel = (status) => {
         <h1 class="text-2xl font-bold text-gray-800 mb-2">{{ t('users.title') }}</h1>
         <p class="text-gray-600">{{ t('users.subtitle') }}</p>
       </div>
-      <div class="flex gap-2">
-        <pv-button 
-          :label="t('users.export.button')" 
-          icon="pi pi-download" 
-          severity="secondary" 
-          outlined
-          @click="exportUsers" 
-        />
-        <pv-button 
-          :label="t('users.newUser')" 
-          icon="pi pi-plus" 
-          @click="openNew" 
-        />
-      </div>
+      <pv-button 
+        :label="t('users.newUser')" 
+        icon="pi pi-plus" 
+        @click="openNew" 
+      />
     </div>
 
 

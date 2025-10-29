@@ -13,6 +13,9 @@ import UserForm from './ user-management/presentation/views/user-form.vue'
 import DeliveryManagement from './delivery-management/presentation/views/deliveries.vue'
 import DeliveryForm from './delivery-management/presentation/views/delivery-form.vue'
 import Fuel from './fuel-consumption/presentation/views/fuel-consumption.vue'
+import FuelForm from './fuel-consumption/presentation/views/fuel-form.vue'
+import Maintenance from './maintenance-management/presentation/views/maintenance.vue'
+import MaintenanceForm from './maintenance-management/presentation/views/maintenance-form.vue'
 
 const routes = [
   {
@@ -103,6 +106,36 @@ const routes = [
     path:'/fuel-consumption',
     name: 'Fuel',
     component: Fuel,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/fuel-consumption/formulario',
+    name: 'FuelForm',
+    component: FuelForm,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/fuel-consumption/formulario/:id',
+    name: 'FuelFormEdit',
+    component: FuelForm,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/maintenance',
+    name: 'Maintenance',
+    component: Maintenance,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/maintenance/formulario',
+    name: 'MaintenanceForm',
+    component: MaintenanceForm,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/maintenance/formulario/:id',
+    name: 'MaintenanceFormEdit',
+    component: MaintenanceForm,
     meta: { requiresAuth: true }
   },
   {

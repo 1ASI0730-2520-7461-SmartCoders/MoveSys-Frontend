@@ -26,11 +26,13 @@
     "deliveriesDescription": "Manage deliveries",
     "fleetDescription": "Control vehicles and drivers",
     "fuelDescription": "Record and analyze fuel consumption",
+    "maintenanceDescription": "Manage vehicle maintenance",
     "reportsDescription": "View statistics and metrics",
     "goToUsers": "Go to Users",
     "goToDeliveries": "Go to Deliveries",
     "goToFleet": "Go to Fleet",
     "goToFuel": "Go to Fuel",
+    "goToMaintenance": "Go to Maintenance",
     "goToReports": "Go to Reports"
   },
   "navigation": {
@@ -39,6 +41,7 @@
     "users": "Users",
     "fleetManagement": "Fleet Management",
     "fuelConsumption": "Fuel Consumption",
+    "maintenance": "Maintenance",
     "reports": "Reports",
     "logout": "Logout"
   },
@@ -267,14 +270,73 @@
   "reports": {
     "title": "Reports and Efficiency",
     "deliverySummary": "Delivery Summary",
+    "completeOperationsSummary": "Complete Operations Summary",
     "noDeliveries": "No deliveries",
+    "noDataAvailable": "No data available",
     "unassigned": "Unassigned",
     "table": {
       "code": "Code",
       "driver": "Driver",
       "vehicle": "Vehicle",
       "distance": "Distance (km)",
-      "status": "Status"
+      "status": "Status",
+      "deliveryCode": "Delivery Code",
+      "client": "Client",
+      "origin": "Origin",
+      "destination": "Destination",
+      "vehicleHeader": "Vehicle",
+      "mileage": "Mileage",
+      "driverHeader": "Driver",
+      "driverPhone": "Driver Phone",
+      "fuelLiters": "Fuel (L)",
+      "maintenanceCost": "Maintenance Cost",
+      "maintenances": "Maintenances",
+      "lastMaintenance": "Last Maintenance"
+    }
+  },
+  "maintenance": {
+    "title": "Maintenance Management",
+    "newMaintenance": "New Maintenance",
+    "maintenanceRecords": "Maintenance Records",
+    "table": {
+      "vehicle": "Vehicle",
+      "type": "Type",
+      "description": "Description",
+      "cost": "Cost (S/.)",
+      "date": "Date",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "types": {
+      "preventive": "Preventive",
+      "corrective": "Corrective",
+      "emergency": "Emergency"
+    },
+    "statuses": {
+      "scheduled": "Scheduled",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "form": {
+      "vehicle": "Vehicle",
+      "selectVehicle": "Select a vehicle",
+      "vehiclePlate": "Vehicle Plate",
+      "maintenanceType": "Maintenance Type",
+      "status": "Status",
+      "description": "Description",
+      "cost": "Cost (S/.)",
+      "mileage": "Mileage (km)",
+      "maintenanceDate": "Maintenance Date",
+      "nextMaintenanceDate": "Next Maintenance",
+      "provider": "Provider/Workshop",
+      "mechanic": "Mechanic",
+      "parts": "Parts",
+      "addPart": "Add Part",
+      "partName": "Part name",
+      "quantity": "Quantity",
+      "partCost": "Cost",
+      "notes": "Additional Notes"
     }
   },
   "deliveries": {
@@ -298,6 +360,50 @@
       "complete": "Complete",
       "partial": "Partial",
       "unassigned": "Unassigned"
+    }
+  },
+  "fuel": {
+    "newEntry": "New Fuel Entry",
+    "records": "Fuel Records",
+    "types": {
+      "diesel": "Diesel B5",
+      "gasoline": "Premium Gasoline",
+      "gasolineRegular": "Regular Gasoline",
+      "gnc": "CNG"
+    },
+    "table": {
+      "vehiclePlate": "Vehicle Plate",
+      "fuelType": "Fuel Type",
+      "quantity": "Quantity Loaded (L)",
+      "costPerLiter": "Cost per Liter (S/.)",
+      "totalPaid": "Total Paid (S/.)",
+      "provider": "Provider",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "form": {
+      "newTitle": "New Fuel Entry",
+      "title": "Fuel Entry",
+      "vehicle": "Vehicle",
+      "selectVehicle": "Select a vehicle",
+      "fuelType": "Fuel Type",
+      "quantity": "Quantity Loaded (L)",
+      "costPerLiter": "Cost per Liter (S/.)",
+      "totalPaid": "Total Paid (S/.)",
+      "provider": "Provider",
+      "providerPlaceholder": "Provider or station name",
+      "filledAt": "Fill Date",
+      "selectDate": "Select date",
+      "odometer": "Odometer",
+      "notes": "Notes",
+      "notesPlaceholder": "Additional notes",
+      "create": "Create",
+      "types": {
+        "diesel": "Diesel",
+        "gasoline": "Gasoline",
+        "electric": "Electric",
+        "hybrid": "Hybrid"
+      }
     }
   }
 }

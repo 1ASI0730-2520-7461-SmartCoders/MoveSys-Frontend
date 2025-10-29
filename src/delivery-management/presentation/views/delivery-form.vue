@@ -60,7 +60,6 @@ const provinceOptions = [
   { label: 'Ica', value: 'Ica' }
 ]
 
-// Computed properties for drivers and vehicles
 const assignedDrivers = computed(() => {
   return vehiclesStore.vehicles
     .filter(v => v.currentDriver && (v.status === 'available' || v.status === 'in_use'))
@@ -131,7 +130,6 @@ onMounted(async () => {
   const deliveryId = route.params.id
   if (deliveryId) {
     editMode.value = true
-    // Cargar datos de la entrega para editar
     const delivery = deliveriesStore.deliveries.find(d => d.id == deliveryId)
     if (delivery) {
       form.value = {
@@ -150,7 +148,6 @@ onMounted(async () => {
     }
   }
   
-  // Cargar datos necesarios
   if (!vehiclesStore.vehicles.length) {
     await vehiclesStore.fetchVehicles()
   }

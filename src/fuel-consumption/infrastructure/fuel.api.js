@@ -29,9 +29,20 @@ export class FuelApi extends BaseApi {
   }
 
   async remove(id) {
-    await this.#endpoint.delete(id);
+    try {
+      await this.#endpoint.delete(id);
+      return true;
+    } catch (error) {
+      if (error.response?.status === 404) {
+        return true;
+      }
+      throw error;
+    }
   }
 }
+
+
+
 
 
 

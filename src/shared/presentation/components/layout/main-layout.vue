@@ -10,7 +10,6 @@ const currentUser = ref(null)
 const notificationsCount = ref(65)
 
 onMounted(() => {
-  // Cargar datos del usuario desde localStorage
   const userData = localStorage.getItem('movesys_user')
   if (userData) {
     currentUser.value = JSON.parse(userData)
@@ -26,11 +25,9 @@ const handleNavigation = (route) => {
 }
 
 const handleLogout = () => {
-  // Limpiar localStorage
   localStorage.removeItem('movesys_token')
   localStorage.removeItem('movesys_user')
 
-  // Redirigir al login
   router.push('/login')
 }
 </script>
@@ -85,11 +82,12 @@ const handleLogout = () => {
 
 .page-content {
   flex: 1;
-  padding: 2rem;
-  background-color: #ffffff;
-  margin: 1rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  background-color: #f8fafc;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow-y: auto;
 }
 
 @media (max-width: 768px) {

@@ -34,7 +34,6 @@ export class DeliveriesApi extends BaseApi {
       const response = await this.#endpoint.update(delivery.id, payload);
       return DeliveryAssembler.toEntityFromResource(response.data);
     } catch (error) {
-      // Fallback a PATCH si PUT no está mapeado
       const response = await this.#endpoint.patch(delivery.id, payload);
       return DeliveryAssembler.toEntityFromResource(response.data);
     }

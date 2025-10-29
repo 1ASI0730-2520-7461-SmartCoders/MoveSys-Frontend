@@ -23,7 +23,6 @@ const { locale } = useI18n()
 const currentLanguage = ref('en')
 
 onMounted(() => {
-  // Cargar idioma guardado o usar inglés por defecto
   const savedLanguage = localStorage.getItem('movesys_language') || 'en'
   currentLanguage.value = savedLanguage
   locale.value = savedLanguage
@@ -34,7 +33,6 @@ const setLanguage = (lang) => {
   locale.value = lang
   localStorage.setItem('movesys_language', lang)
   
-  // Emitir evento para notificar cambio de idioma
   emit('language-changed', lang)
 }
 

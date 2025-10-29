@@ -7,7 +7,6 @@ import { notificationService } from '../../shared/infrastructure/notification.se
 const api = new UsersApi();
 
 export const useUsersStore = defineStore('users', () => {
-  // State
   const users = ref([]);
   const currentUser = ref(null);
   const loading = ref(false);
@@ -16,7 +15,6 @@ export const useUsersStore = defineStore('users', () => {
   const selectedRole = ref('driver');
   const selectedStatus = ref('active');
 
-  // Getters
   const totalUsers = computed(() => users.value.length);
   
   const activeUsers = computed(() => 
@@ -28,13 +26,10 @@ export const useUsersStore = defineStore('users', () => {
   const filteredUsers = computed(() => {
     let filtered = users.value;
 
-    // Filter by role
     filtered = filtered.filter(user => user.role === 'driver');
 
-    // Filter by status
     filtered = filtered.filter(user => user.status === 'active');
 
-    // Filter by search query
     if (searchQuery.value) {
       const query = searchQuery.value.toLowerCase();
       filtered = filtered.filter(user => 
@@ -55,7 +50,6 @@ export const useUsersStore = defineStore('users', () => {
     { label: 'Activo', value: 'active' }
   ]);
 
-  // Actions
   async function fetchUsers(params = {}) {
     loading.value = true;
     errors.value = [];
@@ -205,7 +199,6 @@ export const useUsersStore = defineStore('users', () => {
   }
 
   return {
-    // State
     users,
     currentUser,
     loading,
@@ -214,7 +207,6 @@ export const useUsersStore = defineStore('users', () => {
     selectedRole,
     selectedStatus,
     
-    // Getters
     totalUsers,
     activeUsers,
     usersByRole,
@@ -222,7 +214,6 @@ export const useUsersStore = defineStore('users', () => {
     roleOptions,
     statusOptions,
     
-    // Actions
     fetchUsers,
     fetchUserById,
     addUser,

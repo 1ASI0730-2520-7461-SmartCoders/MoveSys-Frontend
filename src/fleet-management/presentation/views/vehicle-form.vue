@@ -96,7 +96,6 @@ onMounted(async () => {
   const vehicleId = route.params.id
   if (vehicleId) {
     editMode.value = true
-    // Cargar datos del vehículo para editar
     const vehicle = vehiclesStore.vehicles.find(v => v.id == vehicleId)
     if (vehicle) {
       form.value = {
@@ -115,7 +114,6 @@ onMounted(async () => {
     }
   }
   
-  // Cargar datos necesarios
   if (!vehiclesStore.vehicles.length) {
     await vehiclesStore.fetchVehicles()
   }
