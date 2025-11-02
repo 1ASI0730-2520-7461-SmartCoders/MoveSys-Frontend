@@ -28,8 +28,16 @@ export class FuelApi extends BaseApi {
     return FuelEntryAssembler.toEntityFromResource(response.data);
   }
 
-  async remove(id) {
-    await this.#endpoint.delete(id);
+ async remove(id) {
+    try {
+      await this.#endpoint.delete(id);
+      return true;
+    } catch (error) {
+      if (error.response?.status === 404) {
+        return true;
+      }
+      throw error;
+    }
   }
 }
 
