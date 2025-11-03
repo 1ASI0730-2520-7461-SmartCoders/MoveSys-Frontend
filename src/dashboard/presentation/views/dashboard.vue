@@ -10,9 +10,10 @@ const go = (path) => router.push(path)
 
 <template>
   <div class="p-6">
-    <h2 class="text-4xl font-bold mb-6">{{ t('dashboard.quickAccess') }}</h2>
+    <h2 class="text-4xl font-bold mb-6 text-center">{{ t('dashboard.quickAccess') }}</h2>
 
-    <div class="grid">
+    <div class="grid justify-content-center">
+      <!-- Primera fila -->
       <div class="col-12 md:col-4">
         <div class="card p-6 flex flex-column gap-4 hover-card">
           <div class="flex align-items-center gap-3">
@@ -43,16 +44,27 @@ const go = (path) => router.push(path)
           <pv-button :label="t('dashboard.goToFleet')" icon="pi pi-arrow-right" size="large" @click="go('/fleet-management')" />
         </div>
       </div>
-      <!-- <div class="col-12 md:col-4">
+      <!-- Segunda fila -->
+      <div class="col-12 md:col-4">
         <div class="card p-6 flex flex-column gap-4 hover-card">
           <div class="flex align-items-center gap-3">
-            <i class="pi pi-gas-pump text-4xl text-orange-500"></i>
+            <i class="pi pi-bolt text-4xl text-orange-500"></i>
             <span class="text-2xl font-semibold">{{ t('navigation.fuelConsumption') }}</span>
           </div>
           <p class="text-gray-600 text-sm">{{ t('dashboard.fuelDescription') }}</p>
           <pv-button :label="t('dashboard.goToFuel')" icon="pi pi-arrow-right" size="large" @click="go('/fuel-consumption')" />
         </div>
-      </div> -->
+      </div>
+      <div class="col-12 md:col-4">
+        <div class="card p-6 flex flex-column gap-4 hover-card">
+          <div class="flex align-items-center gap-3">
+            <i class="pi pi-wrench text-4xl text-yellow-600"></i>
+            <span class="text-2xl font-semibold">{{ t('navigation.maintenance') }}</span>
+          </div>
+          <p class="text-gray-600 text-sm">{{ t('dashboard.maintenanceDescription') }}</p>
+          <pv-button :label="'→ ' + t('dashboard.goToMaintenance')" icon="pi pi-arrow-right" size="large" @click="go('/maintenance')" />
+        </div>
+      </div>
       <div class="col-12 md:col-4">
         <div class="card p-6 flex flex-column gap-4 hover-card">
           <div class="flex align-items-center gap-3">
@@ -113,11 +125,11 @@ h2 {
   .pi {
     font-size: 2.5rem !important;
   }
-  
+
   .card {
     min-height: 180px;
   }
-  
+
   h2 {
     font-size: 2rem;
   }
