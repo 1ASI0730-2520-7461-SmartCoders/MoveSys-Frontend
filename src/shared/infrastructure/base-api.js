@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const primaryApi = 'http://localhost:3000';
+const primaryApi = import.meta.env.VITE_API_URL || 'http://localhost:5180';
 const fallbackApi = import.meta.env.VITE_MOVESYS_PLATFORM_API_FALLBACK_URL || '';
-const fallbackApis = [fallbackApi, 'http://localhost:3000', 'http://localhost:3001', 'http://localhost:4000']
+const fallbackApis = [fallbackApi, import.meta.env.VITE_API_URL, 'http://localhost:5180', 'http://localhost:3000', 'http://localhost:3001', 'http://localhost:4000']
   .filter(Boolean)
   .filter((url, idx, arr) => arr.indexOf(url) === idx);
 
