@@ -59,6 +59,12 @@ export const useMaintenanceStore = defineStore('maintenance', () => {
     try {
       records.value = await api.list(params);
     } catch (error) {
+      // Si el endpoint no existe (404), no mostrar error (el backend aún no está implementado)
+      if (error.response?.status === 404) {
+        console.warn('Maintenance endpoint no disponible aún:', error.response?.status);
+        records.value = []; // Inicializar con lista vacía
+        return;
+      }
       const message = error.response?.data?.message || error.message || 'Error al cargar mantenimientos';
       errors.value.push(message);
       notificationService.error(message);
