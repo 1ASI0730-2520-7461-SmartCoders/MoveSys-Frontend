@@ -61,7 +61,7 @@ const availableVehicles = computed(() => {
   const vehicles = (vehiclesStore.vehicles || [])
     .filter(v => v.status === 'available' || v.status === 'in_use' || v.status === 'maintenance')
     .map(v => ({
-      label: `${v.licensePlate || v.license_plate} - ${v.brand} ${v.model}`,
+      label: `${v.licensePlate || v.license_plate}`,
       value: v.id,
       plate: v.licensePlate || v.license_plate,
       model: `${v.brand} ${v.model}`,
@@ -92,27 +92,34 @@ const validateForm = () => {
 }
 
 const handleSave = async () => {
-  if (!validateForm()) return
+  if (!validateForm()) {
+    console.log('Form validation failed:', formErrors.value)
+    return
+  }
   
   loading.value = true
   try {
+    // Preparar los datos antes de enviar
     const entryData = {
       vehicleId: form.value.vehicleId,
-      vehiclePlate: form.value.vehiclePlate,
-      model: form.value.model,
-      maintenanceType: form.value.maintenanceType,
-      description: form.value.description,
-      cost: form.value.cost,
-      mileage: form.value.mileage,
-      maintenanceDate: form.value.maintenanceDate,
-      nextMaintenanceDate: form.value.nextMaintenanceDate,
-      nextMaintenanceMileage: form.value.nextMaintenanceMileage,
-      provider: form.value.provider,
-      parts: form.value.parts,
-      mechanic: form.value.mechanic,
-      notes: form.value.notes,
-      status: form.value.status
+      vehiclePlate: form.value.vehiclePlate || '',
+      model: form.value.model || '',
+      maintenanceType: form.value.maintenanceType || 'preventive',
+      description: form.value.description || '',
+      cost: form.value.cost != null ? Number(form.value.cost) : 0,
+      mileage: form.value.mileage != null ? Number(form.value.mileage) : null,
+      maintenanceDate: form.value.maintenanceDate || null,
+      nextMaintenanceDate: form.value.nextMaintenanceDate || null,
+      nextMaintenanceMileage: form.value.nextMaintenanceMileage != null ? Number(form.value.nextMaintenanceMileage) : null,
+      provider: form.value.provider || '',
+      parts: form.value.parts || [],
+      mechanic: form.value.mechanic || '',
+      notes: form.value.notes || '',
+      status: form.value.status || 'scheduled'
     }
+    
+    // Log para debugging
+    console.log(' Enviando datos de mantenimiento:', entryData)
     
     if (editMode.value) {
       entryData.id = route.params.id
@@ -123,7 +130,10 @@ const handleSave = async () => {
     
     router.push('/maintenance')
   } catch (error) {
-    console.error('Error saving:', error)
+    console.error(' Error saving:', error)
+    if (error.response?.data?.message) {
+      console.error('Mensaje del backend:', error.response.data.message)
+    }
   } finally {
     loading.value = false
   }
