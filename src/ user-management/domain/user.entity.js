@@ -7,10 +7,7 @@ export class User {
     dni = '',
     phoneNumber = '', 
     role = 'driver',
-    status = 'active',
-    createdAt = null,
-    updatedAt = null,
-    lastLogin = null
+    status = 'active'
   } = {}) {
     this.id = id;
     this.firstName = firstName;
@@ -19,9 +16,6 @@ export class User {
     this.phoneNumber = phoneNumber;
     this.role = role;
     this.status = status;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-    this.lastLogin = lastLogin;
   }
 
   get fullName() {
@@ -47,10 +41,7 @@ export class User {
       dni: this.dni,
       phoneNumber: this.phoneNumber,
       role: this.role,
-      status: this.status,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
-      lastLogin: this.lastLogin
+      status: this.status
     };
   }
 
