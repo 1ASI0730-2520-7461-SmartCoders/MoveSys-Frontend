@@ -3,16 +3,13 @@ import { User } from '../domain/user.entity.js';
 export class UserAssembler {
   static toEntityFromResource(resource) {
     return new User({
-      id: resource.id,
-      firstName: resource.firstName || resource.first_name,
-      lastName: resource.lastName || resource.last_name,
-      dni: resource.dni,
-      phoneNumber: resource.phoneNumber || resource.phone_number,
-      role: 'driver',
-      status: 'active',
-      createdAt: resource.createdAt || resource.created_at,
-      updatedAt: resource.updatedAt || resource.updated_at,
-      lastLogin: resource.lastLogin || resource.last_login
+      id: resource.id || resource.Id,
+      firstName: resource.FirstName || resource.firstName || resource.first_name,
+      lastName: resource.LastName || resource.lastName || resource.last_name,
+      dni: resource.Dni || resource.dni,
+      phoneNumber: resource.PhoneNumber || resource.phoneNumber || resource.phone_number,
+      role: resource.Role || resource.role || 'driver',
+      status: resource.Status || resource.status || 'active'
     });
   }
 
@@ -26,25 +23,34 @@ export class UserAssembler {
   }
 
   static toResource(user) {
+    // El backend acepta camelCase (formato estándar de APIs REST)
     return {
-      id: user.id,
-      first_name: user.firstName,
-      last_name: user.lastName,
+      firstName: user.firstName,
+      lastName: user.lastName,
       dni: user.dni,
-      phone_number: user.phoneNumber,
-      role: 'driver',
-      status: 'active'
+      phoneNumber: user.phoneNumber,
+      role: user.role || 'driver',
+      status: user.status || 'active'
     };
   }
 
   static toCreateResource(user) {
-    const resource = this.toResource(user);
-    delete resource.id;
-    return resource;
+    // Solo enviamos los campos que el usuario ingresa en el formulario
+    // El backend genera automáticamente el id
+    return {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      dni: user.dni,
+      phoneNumber: user.phoneNumber,
+      role: user.role || 'driver',
+      status: user.status || 'active'
+    };
   }
 
   static toUpdateResource(user) {
-    return this.toResource(user);
+    const resource = this.toResource(user);
+    delete resource.Id; // El Id va en la URL, no en el body
+    return resource;
   }
 }
 
