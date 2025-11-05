@@ -101,26 +101,27 @@ export const useVehiclesStore = defineStore('vehicles', () => {
     loading.value = true;
     try {
       const updated = await api.assignDriver(id, driverName);
+      console.log(' Vehículo actualizado después de asignar conductor:', updated);
+      
+      // Buscar y actualizar el vehículo en la lista
       const idx = vehicles.value.findIndex(v => v.id === updated.id);
-      if (idx !== -1) vehicles.value[idx] = updated;
-      notificationService.success('Conductor asignado');
+      if (idx !== -1) {
+        // Reemplazar completamente el vehículo con los datos actualizados del servidor
+        vehicles.value[idx] = { ...vehicles.value[idx], ...updated };
+        console.log(' Vehículo actualizado en la lista, índice:', idx);
+      } else {
+        // Si no se encuentra, recargar toda la lista
+        console.log(' Vehículo no encontrado en lista, recargando...');
+        await fetchVehicles();
+      }
+      notificationService.success('Conductor asignado correctamente');
       return updated;
     } catch (error) {
-      try {
-        const current = vehicles.value.find(v => v.id === id);
-        if (!current) throw error;
-        const merged = { ...current, currentDriver: driverName, status: 'in_use' };
-        const updated = await api.update(merged);
-        const idx = vehicles.value.findIndex(v => v.id === updated.id);
-        if (idx !== -1) vehicles.value[idx] = updated;
-        notificationService.success('Conductor asignado');
-        return updated;
-      } catch (inner) {
-        const message = inner.response?.data?.message || inner.message || 'Error al asignar conductor';
-        errors.value.push(message);
-        notificationService.error(message);
-        throw inner;
-      }
+      console.error(' Error al asignar conductor:', error);
+      const message = error.response?.data?.message || error.message || 'Error al asignar conductor';
+      errors.value.push(message);
+      notificationService.error(message);
+      throw error;
     } finally {
       loading.value = false;
     }
