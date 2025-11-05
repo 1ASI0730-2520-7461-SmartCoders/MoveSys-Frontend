@@ -16,7 +16,15 @@
     "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
     "invalidCredentials": "Credenciales incorrectas",
     "loginError": "Error en el login. Intente nuevamente.",
-    "usePredefinedCredentials": "Use las credenciales predefinidas para acceder"
+    "usePredefinedCredentials": "Use las credenciales predefinidas para acceder",
+    "registerTitle": "Registro de Operador",
+    "registerOperatorInfo": "Registro exclusivo para operadores del sistema",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "dni": "DNI",
+    "phoneNumber": "Teléfono",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "dontHaveAccount": "¿No tienes una cuenta?"
   },
   "dashboard": {
     "title": "Panel de Control",
@@ -360,7 +368,9 @@
       "complete": "Completa",
       "partial": "Parcial",
       "unassigned": "Sin asignar"
-    }
+    },
+    "confirmDelete": "¿Estás seguro de que deseas eliminar la entrega {code}?",
+    "confirmDeleteHeader": "Confirmar eliminación"
   },
   "fuel": {
     "newEntry": "Nueva Carga",
