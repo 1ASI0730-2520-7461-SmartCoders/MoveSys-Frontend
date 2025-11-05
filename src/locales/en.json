@@ -16,7 +16,15 @@
     "passwordMinLength": "Password must be at least 6 characters",
     "invalidCredentials": "Invalid credentials",
     "loginError": "Login error. Please try again.",
-    "usePredefinedCredentials": "Use predefined credentials to access"
+    "usePredefinedCredentials": "Use predefined credentials to access",
+    "registerTitle": "Operator Registration",
+    "registerOperatorInfo": "Exclusive registration for system operators",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "dni": "ID Number",
+    "phoneNumber": "Phone Number",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -360,7 +368,9 @@
       "complete": "Complete",
       "partial": "Partial",
       "unassigned": "Unassigned"
-    }
+    },
+    "confirmDelete": "Are you sure you want to delete delivery {code}?",
+    "confirmDeleteHeader": "Confirm Deletion"
   },
   "fuel": {
     "newEntry": "New Fuel Entry",
