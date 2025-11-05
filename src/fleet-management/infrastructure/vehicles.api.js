@@ -2,14 +2,16 @@ import { BaseApi } from '../../shared/infrastructure/base-api.js';
 import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
 import { VehicleAssembler } from './vehicle.assembler.js';
 
-const vehiclesEndpointPath = import.meta.env?.VITE_VEHICLES_ENDPOINT_PATH || '/vehicles';
+// Forzar el endpoint correcto - el backend está en /api/v1/vehicles
+const vehiclesEndpointPath = '/api/v1/vehicles';
 
 export class VehiclesApi extends BaseApi {
   #vehiclesEndpoint
 
   constructor() {
     super();
-    this.#vehiclesEndpoint = new BaseEndpoint(this, vehiclesEndpointPath);
+    const endpoint = '/api/v1/vehicles';
+    this.#vehiclesEndpoint = new BaseEndpoint(this, endpoint);
   }
 
   async list(params = {}) {
@@ -31,6 +33,10 @@ export class VehiclesApi extends BaseApi {
   async update(vehicle) {
     const payload = VehicleAssembler.toUpdateResource(vehicle);
     const response = await this.#vehiclesEndpoint.update(vehicle.id, payload);
+    // El backend devuelve NoContent (204), así que obtenemos el vehículo actualizado
+    if (response.status === 204 || !response.data) {
+      return await this.getById(vehicle.id);
+    }
     return VehicleAssembler.toEntityFromResource(response.data);
   }
 
@@ -53,35 +59,44 @@ export class VehiclesApi extends BaseApi {
 
   async updateStatus(id, status) {
     const response = await this.#vehiclesEndpoint.patch(id, { status });
+    // El backend devuelve NoContent (204), así que obtenemos el vehículo actualizado
+    if (response.status === 204 || !response.data) {
+      return await this.getById(id);
+    }
     return VehicleAssembler.toEntityFromResource(response.data);
   }
 
   async assignDriver(id, driverName) {
-    try {
-      const response = await this.#vehiclesEndpoint.patch(id, { 
-        current_driver: driverName,
-        status: 'in_use'
-      });
-      return VehicleAssembler.toEntityFromResource(response.data);
-    } catch (error) {
-      const getResp = await this.#vehiclesEndpoint.getById(id);
-      const resource = getResp.data;
-      const merged = { ...resource, current_driver: driverName, status: 'in_use' };
-      const putResp = await this.#vehiclesEndpoint.update(id, merged);
-      return VehicleAssembler.toEntityFromResource(putResp.data);
+    // El backend espera camelCase: currentDriver (no current_driver)
+    const response = await this.#vehiclesEndpoint.patch(id, { 
+      currentDriver: driverName,
+      status: 'in_use'
+    });
+    // El backend devuelve NoContent (204), así que obtenemos el vehículo actualizado
+    if (response.status === 204 || !response.data) {
+      return await this.getById(id);
     }
+    return VehicleAssembler.toEntityFromResource(response.data);
   }
 
   async unassignDriver(id) {
     const response = await this.#vehiclesEndpoint.patch(id, { 
-      current_driver: null,
+      currentDriver: null,
       status: 'available'
     });
+    // El backend devuelve NoContent (204), así que obtenemos el vehículo actualizado
+    if (response.status === 204 || !response.data) {
+      return await this.getById(id);
+    }
     return VehicleAssembler.toEntityFromResource(response.data);
   }
 
   async updateMileage(id, mileage) {
     const response = await this.#vehiclesEndpoint.patch(id, { mileage });
+    // El backend devuelve NoContent (204), así que obtenemos el vehículo actualizado
+    if (response.status === 204 || !response.data) {
+      return await this.getById(id);
+    }
     return VehicleAssembler.toEntityFromResource(response.data);
   }
 
