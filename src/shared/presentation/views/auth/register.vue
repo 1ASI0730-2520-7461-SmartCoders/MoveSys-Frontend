@@ -1,203 +1,105 @@
-<template>
-  <div class="register-container">
-    <div class="register-wrapper">
-      <Card class="register-card">
-        <template #content>
-          <!-- Logo and Title -->
-          <div class="register-header">
-            <div class="logo-container">
-              <i class="pi pi-building logo-icon"></i>
-            </div>
-            <h2 class="register-title">Crear Cuenta</h2>
-          </div>
-
-          <!-- Registration Form -->
-          <form @submit.prevent="handleRegister" class="register-form">
-            <!-- User Type Selection -->
-            <div class="input-group">
-              <label class="input-label">
-                <i class="pi pi-users"></i>
-                Tipo de Usuario
-              </label>
-              <div class="user-type-selection">
-                <div class="user-type-option" 
-                     :class="{ active: userType === 'operador' }"
-                     @click="selectUserType('operador')">
-                  <i class="pi pi-desktop"></i>
-                  <span>Operador</span>
-                </div>
-                <div class="user-type-option" 
-                     :class="{ active: userType === 'chofer' }"
-                     @click="selectUserType('chofer')">
-                  <i class="pi pi-car"></i>
-                  <span>Chofer</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- First Name -->
-            <div class="input-group">
-              <label for="firstName" class="input-label">
-                <i class="pi pi-user"></i>
-                Nombre
-              </label>
-              <InputText 
-                id="firstName"
-                v-model="firstName"
-                placeholder="Tu nombre"
-                class="custom-input"
-              />
-            </div>
-
-            <!-- Last Name -->
-            <div class="input-group">
-              <label for="lastName" class="input-label">
-                <i class="pi pi-user"></i>
-                Apellido
-              </label>
-              <InputText 
-                id="lastName"
-                v-model="lastName"
-                placeholder="Tu apellido"
-                class="custom-input"
-              />
-            </div>
-
-            <!-- Email -->
-            <div class="input-group">
-              <label for="email" class="input-label">
-                <i class="pi pi-envelope"></i>
-                Correo Electrónico
-              </label>
-              <InputText 
-                id="email"
-                v-model="email"
-                type="email"
-                placeholder="tu@email.com"
-                class="custom-input"
-              />
-            </div>
-
-            <!-- Password -->
-            <div class="input-group">
-              <label for="password" class="input-label">
-                <i class="pi pi-lock"></i>
-                Contraseña
-              </label>
-              <Password 
-                id="password"
-                v-model="password"
-                placeholder="Tu contraseña"
-                :feedback="false"
-                toggleMask
-                class="custom-password"
-              />
-            </div>
-
-            <!-- Terms and Conditions -->
-            <div class="terms-section">
-              <Checkbox 
-                v-model="acceptTerms" 
-                inputId="terms" 
-                :binary="true"
-              />
-              <label for="terms" class="terms-label">
-                Acepto los <a href="#" @click.prevent="showTerms" class="terms-link">términos y condiciones</a>
-              </label>
-            </div>
-
-            <!-- Submit Button -->
-            <Button 
-              type="submit"
-              label="Crear Cuenta"
-              icon="pi pi-user-plus"
-              class="register-button"
-              :loading="loading"
-              :disabled="!isFormValid"
-            />
-
-            <!-- Login Link -->
-            <div class="login-section">
-              <p class="login-text">¿Ya tienes una cuenta?</p>
-              <Button 
-                label="Iniciar sesión"
-                icon="pi pi-sign-in"
-                class="login-button"
-                text
-                @click="goToLogin"
-              />
-            </div>
-          </form>
-        </template>
-      </Card>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { useUsersStore } from '../../../../ user-management/application/users.store.js'
 
+const { t } = useI18n()
 const router = useRouter()
-const userType = ref('')
+const usersStore = useUsersStore()
+
 const firstName = ref('')
 const lastName = ref('')
 const email = ref('')
 const password = ref('')
-const acceptTerms = ref(false)
+const dni = ref('')
+const phoneNumber = ref('')
 const loading = ref(false)
+const errors = ref({})
 
 const isFormValid = computed(() => {
-  return userType.value &&
-         firstName.value.trim().length > 0 &&
+  return firstName.value.trim().length > 0 &&
          lastName.value.trim().length > 0 &&
          email.value.trim().length > 0 &&
-         password.value.trim().length > 0 &&
-         acceptTerms.value
+         password.value.trim().length >= 6 &&
+         dni.value.trim().length >= 6 &&
+         phoneNumber.value.trim().length > 0
 })
 
-const selectUserType = (type) => {
-  userType.value = type
+const validateForm = () => {
+  errors.value = {}
+
+  if (!firstName.value.trim()) {
+    errors.value.firstName = 'El nombre es requerido'
+  } else if (firstName.value.trim().length < 2) {
+    errors.value.firstName = 'El nombre debe tener al menos 2 caracteres'
+  }
+
+  if (!lastName.value.trim()) {
+    errors.value.lastName = 'El apellido es requerido'
+  } else if (lastName.value.trim().length < 2) {
+    errors.value.lastName = 'El apellido debe tener al menos 2 caracteres'
+  }
+
+  if (!email.value.trim()) {
+    errors.value.email = 'El correo es requerido'
+  } else if (!/\S+@\S+\.\S+/.test(email.value)) {
+    errors.value.email = 'Ingrese un correo válido'
+  }
+
+  if (!password.value.trim()) {
+    errors.value.password = 'La contraseña es requerida'
+  } else if (password.value.trim().length < 6) {
+    errors.value.password = 'La contraseña debe tener al menos 6 caracteres'
+  }
+
+  if (!dni.value.trim()) {
+    errors.value.dni = 'El DNI es requerido'
+  } else if (dni.value.trim().length < 6) {
+    errors.value.dni = 'El DNI debe tener al menos 6 caracteres'
+  }
+
+  if (!phoneNumber.value.trim()) {
+    errors.value.phoneNumber = 'El teléfono es requerido'
+  }
+
+  return Object.keys(errors.value).length === 0
 }
 
 const handleRegister = async () => {
-  if (!isFormValid.value) return
-  
+  if (!validateForm()) {
+    return
+  }
+
   loading.value = true
   
   try {
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    const newUser = {
-      id: Date.now(),
-      userType: userType.value,
-      firstName: firstName.value,
-      lastName: lastName.value,
-      email: email.value,
-      status: 'Activo',
-      registrationDate: new Date()
+    const userData = {
+      firstName: firstName.value.trim(),
+      lastName: lastName.value.trim(),
+      dni: dni.value.trim(),
+      phoneNumber: phoneNumber.value.trim(),
+      role: 'operator', // Solo operadores pueden registrarse
+      status: 'active'
     }
     
-    const users = JSON.parse(localStorage.getItem('movesys_users') || '[]')
-    users.push(newUser)
-    localStorage.setItem('movesys_users', JSON.stringify(users))
+    await usersStore.addUser(userData)
     
-    alert(`¡Cuenta de ${userType.value} creada exitosamente!\nUsuario: ${newUser.firstName} ${newUser.lastName}`)
-    
-    userType.value = ''
+    // Limpiar formulario
     firstName.value = ''
     lastName.value = ''
     email.value = ''
     password.value = ''
-    acceptTerms.value = false
+    dni.value = ''
+    phoneNumber.value = ''
     
+    // Redirigir al login después de un segundo
     setTimeout(() => {
       router.push('/login')
-    }, 1000)
+    }, 1500)
     
   } catch (error) {
     console.error('Registration error:', error)
-    alert('Error al crear la cuenta. Intente nuevamente.')
   } finally {
     loading.value = false
   }
@@ -206,11 +108,164 @@ const handleRegister = async () => {
 const goToLogin = () => {
   router.push('/login')
 }
-
-const showTerms = () => {
-  alert('Aquí se mostrarían los términos y condiciones')
-}
 </script>
+
+<template>
+  <div class="register-container">
+    <div class="register-wrapper">
+      <pv-card class="register-card">
+        <template #content>
+          <div class="operator-info">
+            <p class="info-text">
+              <i class="pi pi-info-circle"></i>
+              {{ t('auth.registerOperatorInfo') }}
+            </p>
+          </div>
+          <form @submit.prevent="handleRegister" class="register-form">
+            <!-- First Name -->
+            <div class="input-group">
+              <pv-float-label>
+                <pv-input-text 
+                  id="firstName"
+                  v-model="firstName"
+                  :class="{ 'p-invalid': errors.firstName }"
+                />
+                <label for="firstName">
+                  <i class="pi pi-user"></i>
+                  {{ t('auth.firstName') }}
+                </label>
+              </pv-float-label>
+              <small v-if="errors.firstName" class="p-error">
+                <i class="pi pi-exclamation-triangle"></i>
+                {{ errors.firstName }}
+              </small>
+            </div>
+
+            <!-- Last Name -->
+            <div class="input-group">
+              <pv-float-label>
+                <pv-input-text 
+                  id="lastName"
+                  v-model="lastName"
+                  :class="{ 'p-invalid': errors.lastName }"
+                />
+                <label for="lastName">
+                  <i class="pi pi-user"></i>
+                  {{ t('auth.lastName') }}
+                </label>
+              </pv-float-label>
+              <small v-if="errors.lastName" class="p-error">
+                <i class="pi pi-exclamation-triangle"></i>
+                {{ errors.lastName }}
+              </small>
+            </div>
+
+            <!-- Email -->
+            <div class="input-group">
+              <pv-float-label>
+                <pv-input-text 
+                  id="email"
+                  v-model="email"
+                  type="email"
+                  :class="{ 'p-invalid': errors.email }"
+                />
+                <label for="email">
+                  <i class="pi pi-envelope"></i>
+                  {{ t('auth.email') }}
+                </label>
+              </pv-float-label>
+              <small v-if="errors.email" class="p-error">
+                <i class="pi pi-exclamation-triangle"></i>
+                {{ errors.email }}
+              </small>
+            </div>
+
+            <!-- Password -->
+            <div class="input-group">
+              <pv-float-label>
+                <pv-password 
+                  id="password"
+                  v-model="password"
+                  :class="{ 'p-invalid': errors.password }"
+                  :feedback="false"
+                  toggle-mask
+                />
+                <label for="password">
+                  <i class="pi pi-lock"></i>
+                  {{ t('auth.password') }}
+                </label>
+              </pv-float-label>
+              <small v-if="errors.password" class="p-error">
+                <i class="pi pi-exclamation-triangle"></i>
+                {{ errors.password }}
+              </small>
+            </div>
+
+            <!-- DNI -->
+            <div class="input-group">
+              <pv-float-label>
+                <pv-input-text 
+                  id="dni"
+                  v-model="dni"
+                  :class="{ 'p-invalid': errors.dni }"
+                />
+                <label for="dni">
+                  <i class="pi pi-id-card"></i>
+                  {{ t('auth.dni') }}
+                </label>
+              </pv-float-label>
+              <small v-if="errors.dni" class="p-error">
+                <i class="pi pi-exclamation-triangle"></i>
+                {{ errors.dni }}
+              </small>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="input-group">
+              <pv-float-label>
+                <pv-input-text 
+                  id="phoneNumber"
+                  v-model="phoneNumber"
+                  :class="{ 'p-invalid': errors.phoneNumber }"
+                />
+                <label for="phoneNumber">
+                  <i class="pi pi-phone"></i>
+                  {{ t('auth.phoneNumber') }}
+                </label>
+              </pv-float-label>
+              <small v-if="errors.phoneNumber" class="p-error">
+                <i class="pi pi-exclamation-triangle"></i>
+                {{ errors.phoneNumber }}
+              </small>
+            </div>
+
+            <!-- Submit Button -->
+            <pv-button 
+              type="submit"
+              :label="t('auth.register')"
+              icon="pi pi-user-plus"
+              :loading="loading"
+              :disabled="!isFormValid"
+              class="register-button"
+            />
+
+            <!-- Login Link -->
+            <div class="login-section">
+              <p class="login-text">{{ t('auth.alreadyHaveAccount') }}</p>
+              <pv-button 
+                :label="t('auth.login')"
+                icon="pi pi-sign-in"
+                class="login-button"
+                text
+                @click="goToLogin"
+              />
+            </div>
+          </form>
+        </template>
+      </pv-card>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .register-container {
@@ -218,40 +273,74 @@ const showTerms = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, rgba(81, 25, 165, 0.07) 0%, rgba(255, 255, 255, 0.13) 100%);
   padding: 1rem;
 }
 
 .register-wrapper {
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
 }
 
-.register-card {
+.logo-img {
+  width: 180px;
+  height: 55px;
+}
+
+:deep(.register-card) {
   background: white;
   border-radius: 1rem;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  padding: 0;
+}
+
+:deep(.register-card .p-card-header) {
+  padding: 2rem 2rem 0 2rem;
+  background: white;
+  border-radius: 1rem 1rem 0 0;
+}
+
+:deep(.register-card .p-card-content) {
+  padding: 2rem;
+  background: white;
+  border-radius: 0 0 1rem 1rem;
+}
+
+:deep(.p-inputtext) {
+  background-color: white !important;
 }
 
 .register-header {
   text-align: center;
-  margin-bottom: 2rem;
-}
-
-.logo-container {
-  margin-bottom: 1rem;
-}
-
-.logo-icon {
-  font-size: 3rem;
-  color: #6366f1;
+  margin-bottom: 0;
 }
 
 .register-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #6366f1;
   margin: 0;
+}
+
+.operator-info {
+  background: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.info-text {
+  color: #0369a1;
+  font-size: 0.875rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-text i {
+  color: #0ea5e9;
 }
 
 .register-form {
@@ -266,7 +355,7 @@ const showTerms = () => {
   gap: 0.5rem;
 }
 
-.input-label {
+:deep(.p-float-label label) {
   font-weight: 600;
   color: #374151;
   font-size: 0.875rem;
@@ -275,92 +364,80 @@ const showTerms = () => {
   gap: 0.5rem;
 }
 
-.input-label i {
+:deep(.p-float-label label i) {
   color: #6366f1;
 }
 
-.custom-input {
+:deep(.p-inputtext) {
   width: 100%;
-}
-
-.custom-password {
-  width: 100%;
-}
-
-.user-type-selection {
-  display: flex;
-  gap: 1rem;
-}
-
-.user-type-option {
-  flex: 1;
-  padding: 1rem;
+  padding: 0.75rem;
   border: 2px solid #e5e7eb;
-  border-radius: 0.75rem;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: border-color 0.3s ease;
+  color: #2b2f30;
 }
 
-.user-type-option:hover {
+:deep(.p-inputtext:focus) {
+  outline: none;
   border-color: #6366f1;
-  background: #f8fafc;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-.user-type-option.active {
+:deep(.p-inputtext.p-invalid) {
+  border-color: #ef4444;
+}
+
+:deep(.p-password) {
+  width: 100%;
+}
+
+:deep(.p-password .p-inputtext) {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: border-color 0.3s ease;
+  color: #2b2f30;
+}
+
+:deep(.p-password .p-inputtext:focus) {
+  outline: none;
   border-color: #6366f1;
-  background: #eff6ff;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-.user-type-option i {
-  display: block;
-  font-size: 1.5rem;
-  color: #6366f1;
-  margin-bottom: 0.5rem;
+:deep(.p-password.p-invalid .p-inputtext) {
+  border-color: #ef4444;
 }
 
-.user-type-option span {
-  font-weight: 600;
-  color: #374151;
-}
-
-.terms-section {
+.p-error {
+  color: #ef4444;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.25rem;
 }
 
-.terms-label {
-  font-size: 0.875rem;
-  color: #6b7280;
-  cursor: pointer;
-}
-
-.terms-link {
-  color: #6366f1;
-  text-decoration: none;
-}
-
-.terms-link:hover {
-  text-decoration: underline;
-}
-
-.register-button {
+:deep(.register-button) {
   width: 100%;
-  background: #10b981;
+  background: #6366f1;
   border: none;
   padding: 0.75rem;
   border-radius: 0.5rem;
   font-weight: 600;
   font-size: 1rem;
   color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.register-button:hover:not(:disabled) {
-  background: #059669;
+:deep(.register-button:hover:not(:disabled)) {
+  background: #4f46e5;
 }
 
-.register-button:disabled {
+:deep(.register-button:disabled) {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -386,62 +463,13 @@ const showTerms = () => {
   color: #4f46e5;
 }
 
-/* PrimeVue Overrides */
-:deep(.p-card-content) {
-  padding: 2rem;
-}
-
-:deep(.p-inputtext) {
-  border-radius: 0.5rem;
-  border: 2px solid #e5e7eb;
-  padding: 0.75rem;
-  font-size: 0.875rem;
-}
-
-:deep(.p-inputtext:focus) {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-:deep(.p-password input) {
-  border-radius: 0.5rem;
-  border: 2px solid #e5e7eb;
-  padding: 0.75rem;
-}
-
-:deep(.p-password:not(.p-disabled).p-focus input) {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-:deep(.p-checkbox .p-checkbox-box) {
-  border-radius: 0.25rem;
-  border: 2px solid #d1d5db;
-}
-
-:deep(.p-checkbox:not(.p-disabled):hover .p-checkbox-box) {
-  border-color: #6366f1;
-}
-
-:deep(.p-checkbox.p-highlight .p-checkbox-box) {
-  background: #6366f1;
-  border-color: #6366f1;
-}
-
 @media (max-width: 640px) {
   .register-container {
     padding: 0.5rem;
   }
   
-  .register-wrapper {
-    max-width: 100%;
-  }
-  
-  .user-type-selection {
-    flex-direction: column;
-  }
-  
-  :deep(.p-card-content) {
+  :deep(.register-card .p-card-header),
+  :deep(.register-card .p-card-content) {
     padding: 1.5rem;
   }
 }
