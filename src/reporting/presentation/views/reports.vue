@@ -1,94 +1,17 @@
 <script setup lang="js">
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useDeliveriesStore } from '../../../delivery-management/application/deliveries.store.js'
-import { useVehiclesStore } from '../../../fleet-management/application/vehicles.store.js'
-import { useFuelStore } from '../../../fuel-consumption/application/fuel.store.js'
-import { useMaintenanceStore } from '../../../maintenance-management/application/maintenance.store.js'
-import { useUsersStore } from '../../../ user-management/application/users.store.js'
+import { useReportsStore } from '../../application/reports.store.js'
 
 const { t } = useI18n()
 
-const deliveriesStore = useDeliveriesStore()
-const vehiclesStore = useVehiclesStore()
-const fuelStore = useFuelStore()
-const maintenanceStore = useMaintenanceStore()
-const usersStore = useUsersStore()
+const reportsStore = useReportsStore()
 
-// Load all data
-onMounted(() => {
-  if (!deliveriesStore.deliveries?.length) deliveriesStore.fetchDeliveries()
-  if (!vehiclesStore.vehicles?.length) vehiclesStore.fetchVehicles()
-  if (!fuelStore.entries?.length) fuelStore.fetchEntries()
-  if (!maintenanceStore.records?.length) maintenanceStore.fetchRecords()
-  if (!usersStore.users?.length) usersStore.fetchUsers()
-})
-
-// Create unified report with all related information
-const unifiedReport = computed(() => {
-  const deliveries = deliveriesStore.deliveries || []
-  const vehicles = vehiclesStore.vehicles || []
-  const fuelEntries = fuelStore.entries || []
-  const maintenanceRecords = maintenanceStore.records || []
-  
-  return deliveries.map(delivery => {
-    const vehiclePlate = delivery.vehiclePlate || delivery.vehicle_plate || ''
-    const vehicle = vehicles.find(v => 
-      (v.licensePlate || v.license_plate) === vehiclePlate
-    )
-    
-    // Get driver information
-    const driverName = delivery.driverName || vehicle?.currentDriver || vehicle?.current_driver || 'N/A'
-    const driverInfo = usersStore.users?.find(u => u.fullName === driverName) || {}
-    
-    // Get fuel entries for this vehicle
-    const fuelData = fuelEntries.filter(e => {
-      const plate = e.vehiclePlate || e.vehicle_plate || ''
-      return plate === vehiclePlate
-    })
-    const totalFuelLiters = fuelData.reduce((sum, e) => sum + (Number(e.liters) || 0), 0)
-    const totalFuelCost = fuelData.reduce((sum, e) => {
-      const cost = Number(e.totalPaid) || Number(e.total_paid) || 0
-      return sum + cost
-    }, 0)
-    
-    // Get maintenance records for this vehicle
-    const maintenanceData = maintenanceRecords.filter(m => {
-      const plate = m.vehiclePlate || m.vehicle_plate || ''
-      return plate === vehiclePlate
-    })
-    const totalMaintenanceCost = maintenanceData.reduce((sum, m) => sum + (Number(m.cost) || 0), 0)
-    
-    return {
-      // Delivery info
-      code: delivery.code || 'N/A',
-      customerName: delivery.customerName || 'N/A',
-      originProvince: delivery.originProvince || delivery.origin_province || 'N/A',
-      destinationProvince: delivery.destinationProvince || delivery.destination_province || 'N/A',
-      distanceKm: delivery.distanceKm || delivery.distance_km || 0,
-      status: delivery.status || 'pending',
-      
-      // Vehicle info
-      vehiclePlate: vehiclePlate || 'N/A',
-      vehicleModel: vehicle ? `${vehicle.brand} ${vehicle.model}` : 'N/A',
-      vehicleMileage: vehicle?.mileage || 0,
-      vehicleStatus: vehicle?.status || 'N/A',
-      
-      // Driver info
-      driverName: driverName,
-      driverDni: driverInfo.dni || 'N/A',
-      driverPhone: driverInfo.phoneNumber || 'N/A',
-      
-      // Fuel info
-      totalFuelLiters: totalFuelLiters,
-      totalFuelCost: totalFuelCost,
-      fuelEntriesCount: fuelData.length,
-      
-      // Maintenance info
-      totalMaintenanceCost: totalMaintenanceCost,
-      maintenanceCount: maintenanceData.length
-    }
-  })
+// Load report data from backend
+onMounted(async () => {
+  if (!reportsStore.unifiedReport?.length) {
+    await reportsStore.fetchUnifiedReport()
+  }
 })
 </script>
 
@@ -106,8 +29,8 @@ const unifiedReport = computed(() => {
       </template>
       <template #content>
         <pv-data-table 
-          :value="unifiedReport" 
-          :loading="deliveriesStore.loading || vehiclesStore.loading || fuelStore.loading || maintenanceStore.loading"
+          :value="reportsStore.unifiedReport" 
+          :loading="reportsStore.loading"
           paginator 
           :rows="10" 
           :rows-per-page-options="[5,10,20,50]"
@@ -139,10 +62,7 @@ const unifiedReport = computed(() => {
             <template #body="{ data }">
               <div class="flex align-items-center gap-2">
                 <i class="pi pi-car text-blue-500"></i>
-                <div>
-                  <div class="font-semibold">{{ data.vehiclePlate }}</div>
-                  <div class="text-xs text-gray-500">{{ data.vehicleModel }}</div>
-                </div>
+                <div class="font-semibold">{{ data.vehiclePlate }}</div>
               </div>
             </template>
           </pv-column>
@@ -158,10 +78,7 @@ const unifiedReport = computed(() => {
             <template #body="{ data }">
               <div class="flex align-items-center gap-2">
                 <i class="pi pi-user text-green-500"></i>
-                <div>
-                  <div class="font-semibold">{{ data.driverName }}</div>
-                  <div class="text-xs text-gray-500">DNI: {{ data.driverDni }}</div>
-                </div>
+                <div class="font-semibold">{{ data.driverName }}</div>
               </div>
             </template>
           </pv-column>
