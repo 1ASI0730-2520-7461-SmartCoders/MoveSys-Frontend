@@ -24,18 +24,23 @@ export class FuelEntryAssembler {
   }
 
   static toCreateResource(entity) {
+    // El backend acepta camelCase (formato estándar de APIs REST)
+    // Asegurar que los valores numéricos se conviertan correctamente
+    const liters = entity.liters != null && entity.liters !== '' ? Number(entity.liters) : 0;
+    const costPerLiter = entity.costPerLiter != null && entity.costPerLiter !== '' ? Number(entity.costPerLiter) : 0;
+    
     return {
-      vehicle_id: entity.vehicleId,
-      vehicle_plate: entity.vehiclePlate,
-      model: entity.model,
-      liters: entity.liters,
-      cost_per_liter: entity.costPerLiter,
-      total_paid: entity.totalPaid,
-      fuel_type: entity.fuelType,
-      provider: entity.provider,
-      filled_at: entity.filledAt,
-      odometer: entity.odometer,
-      notes: entity.notes,
+      vehicleId: entity.vehicleId || null,
+      vehiclePlate: entity.vehiclePlate || '',
+      model: entity.model || null,
+      liters: liters,
+      costPerLiter: costPerLiter,
+      totalPaid: entity.totalPaid != null && entity.totalPaid !== '' ? Number(entity.totalPaid) : null,
+      fuelType: entity.fuelType || 'diesel',
+      provider: entity.provider || '',
+      filledAt: entity.filledAt || null,
+      odometer: entity.odometer != null && entity.odometer !== '' ? Number(entity.odometer) : null,
+      notes: entity.notes || null
     };
   }
 
