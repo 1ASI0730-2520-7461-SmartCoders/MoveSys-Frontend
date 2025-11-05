@@ -150,6 +150,8 @@ const saveAssignDriver = async () => {
   
   try {
     await store.assignDriver(selectedVehicle.value.id, selectedDriver.value)
+    // Recargar la lista para asegurar que se vea la actualización
+    await store.fetchVehicles()
     assignDialogVisible.value = false
   } catch (error) {
     console.error('Error assigning driver:', error)
