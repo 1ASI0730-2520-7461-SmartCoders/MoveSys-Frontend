@@ -64,7 +64,7 @@ onMounted(() => {
   if (!users.length) fetchUsers()
 })
 
-watch(searchQuery, (newQuery) => {
+watch(() => searchQuery.value, (newQuery) => {
   if (newQuery) {
     searchUsers(newQuery)
   } else {
@@ -149,47 +149,6 @@ const getStatusLabel = (status) => {
       />
     </div>
 
-
-    <!-- Statistics Cards -->
-    <div class="grid mb-4">
-      <div class="col-12 md:col-3">
-        <div class="card text-center">
-          <div class="p-3">
-            <i class="pi pi-users text-4xl text-blue-500 mb-2"></i>
-            <div class="text-2xl font-bold">{{ users.length }}</div>
-            <div class="text-sm text-gray-600">{{ t('users.stats.total') }}</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 md:col-3">
-        <div class="card text-center">
-          <div class="p-3">
-            <i class="pi pi-check-circle text-4xl text-green-500 mb-2"></i>
-            <div class="text-2xl font-bold">{{ users.filter(u => u.isActive).length }}</div>
-            <div class="text-sm text-gray-600">{{ t('users.stats.active') }}</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 md:col-3">
-        <div class="card text-center">
-          <div class="p-3">
-            <i class="pi pi-times-circle text-4xl text-red-500 mb-2"></i>
-            <div class="text-2xl font-bold">{{ users.filter(u => !u.isActive).length }}</div>
-            <div class="text-sm text-gray-600">{{ t('users.stats.inactive') }}</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 md:col-3">
-        <div class="card text-center">
-          <div class="p-3">
-            <i class="pi pi-filter text-4xl text-purple-500 mb-2"></i>
-            <div class="text-2xl font-bold">{{ filteredUsers.length }}</div>
-            <div class="text-sm text-gray-600">{{ t('users.stats.filtered') }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Data Table -->
     <div class="card">
       <pv-data-table 
@@ -211,25 +170,9 @@ const getStatusLabel = (status) => {
           </div>
         </template>
 
-        <pv-column field="id" :header="t('users.table.id')" sortable :style="{ width: '80px' }">
-          <template #body="slotProps">
-            <pv-tag :value="slotProps.data.id" severity="info" />
-          </template>
-        </pv-column>
-
         <pv-column field="fullName" :header="t('users.table.fullName')" sortable>
           <template #body="slotProps">
-            <div class="flex align-items-center gap-2">
-              <pv-avatar 
-                :label="slotProps.data.firstName.charAt(0) + slotProps.data.lastName.charAt(0)" 
-                shape="circle" 
-                size="small"
-              />
-              <div>
-                <div class="font-semibold">{{ slotProps.data.fullName }}</div>
-                <div class="text-sm text-gray-600">{{ t('users.table.dni') }}: {{ slotProps.data.dni }}</div>
-              </div>
-            </div>
+            <div class="font-semibold">{{ slotProps.data.fullName }}</div>
           </template>
         </pv-column>
 
@@ -261,25 +204,16 @@ const getStatusLabel = (status) => {
                 size="small"
                 text 
                 rounded 
-                severity="secondary"
+                severity="info"
                 @click="openEdit(slotProps.data)" 
                 v-tooltip.top="t('common.edit')"
-              />
-              <pv-button 
-                :icon="slotProps.data.isActive ? 'pi pi-eye-slash' : 'pi pi-eye'" 
-                size="small"
-                text 
-                rounded 
-                severity="secondary"
-                @click="toggleUserStatus(slotProps.data)" 
-                :v-tooltip.top="slotProps.data.isActive ? t('users.deactivate') : t('users.activate')"
               />
               <pv-button 
                 icon="pi pi-trash" 
                 size="small"
                 text 
                 rounded 
-                severity="secondary"
+                severity="danger"
                 @click="confirmDelete(slotProps.data)" 
                 v-tooltip.top="t('common.delete')"
               />
