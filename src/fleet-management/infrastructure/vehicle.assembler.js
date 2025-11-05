@@ -3,22 +3,20 @@ import { Vehicle } from '../domain/vehicle.entity.js';
 export class VehicleAssembler {
   static toEntityFromResource(resource) {
     return new Vehicle({
-      id: resource.id,
-      licensePlate: resource.license_plate || resource.licensePlate,
-      brand: resource.brand,
-      model: resource.model,
-      year: resource.year,
-      color: resource.color,
-      type: resource.type,
-      capacity: resource.capacity,
-      fuelType: resource.fuel_type || resource.fuelType,
-      status: resource.status,
-      currentDriver: resource.current_driver || resource.currentDriver,
-      lastMaintenance: resource.last_maintenance || resource.lastMaintenance,
-      nextMaintenance: resource.next_maintenance || resource.nextMaintenance,
-      mileage: resource.mileage,
-      createdAt: resource.created_at || resource.createdAt,
-      updatedAt: resource.updated_at || resource.updatedAt
+      id: resource.id || resource.Id,
+      // Backend usa "Plate" pero frontend usa "licensePlate"
+      licensePlate: resource.Plate || resource.plate || resource.licensePlate || resource.license_plate,
+      brand: resource.Brand || resource.brand,
+      model: resource.Model || resource.model,
+      year: resource.Year || resource.year,
+      color: resource.Color || resource.color,
+      type: resource.Type || resource.type || 'truck',
+      capacity: resource.Capacity || resource.capacity,
+      fuelType: resource.FuelType || resource.fuelType || resource.fuel_type || 'gasoline',
+      status: resource.Status || resource.status || 'available',
+      currentDriver: resource.CurrentDriver || resource.currentDriver || resource.current_driver,
+      mileage: resource.Mileage || resource.mileage || 0
+      // Eliminamos createdAt, updatedAt, lastMaintenance, nextMaintenance
     });
   }
 
@@ -32,32 +30,47 @@ export class VehicleAssembler {
   }
 
   static toResource(vehicle) {
+    // Backend espera camelCase y "Plate" en lugar de "licensePlate"
     return {
-      id: vehicle.id,
-      license_plate: vehicle.licensePlate,
+      plate: vehicle.licensePlate || vehicle.plate,
       brand: vehicle.brand,
       model: vehicle.model,
       year: vehicle.year,
       color: vehicle.color,
-      type: vehicle.type,
+      type: vehicle.type || 'truck',
       capacity: vehicle.capacity,
-      fuel_type: vehicle.fuelType,
-      status: vehicle.status,
-      current_driver: vehicle.currentDriver,
-      last_maintenance: vehicle.lastMaintenance,
-      next_maintenance: vehicle.nextMaintenance,
-      mileage: vehicle.mileage
+      fuelType: vehicle.fuelType || 'gasoline',
+      status: vehicle.status || 'available',
+      currentDriver: vehicle.currentDriver,
+      mileage: vehicle.mileage || 0
     };
   }
 
   static toCreateResource(vehicle) {
-    const resource = this.toResource(vehicle);
-    delete resource.id;
-    return resource;
+    // Solo enviamos los campos que el usuario ingresa en el formulario
+    // El backend genera automáticamente el id
+    // Asegurar que el año sea un entero (no decimal)
+    const year = vehicle.year != null ? Math.round(Number(vehicle.year)) : null;
+    
+    return {
+      plate: vehicle.licensePlate || vehicle.plate,
+      brand: vehicle.brand,
+      model: vehicle.model,
+      year: year,
+      color: vehicle.color || null,
+      type: vehicle.type || 'truck',
+      capacity: vehicle.capacity != null ? Number(vehicle.capacity) : null,
+      fuelType: vehicle.fuelType || 'gasoline',
+      status: vehicle.status || 'available',
+      mileage: vehicle.mileage != null ? Number(vehicle.mileage) : 0
+    };
   }
 
   static toUpdateResource(vehicle) {
-    return this.toResource(vehicle);
+    // Usar la misma lógica que toCreateResource para asegurar consistencia
+    const resource = this.toCreateResource(vehicle);
+    // El id va en la URL, no en el body
+    return resource;
   }
 }
 
