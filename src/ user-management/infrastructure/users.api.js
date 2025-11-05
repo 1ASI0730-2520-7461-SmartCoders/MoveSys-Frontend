@@ -2,17 +2,24 @@ import { BaseApi } from '../../shared/infrastructure/base-api.js';
 import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
 import { UserAssembler } from './user.assembler.js';
 
-const usersEndpointPath = import.meta.env?.VITE_USERS_ENDPOINT_PATH || '/users';
+// Forzar el endpoint correcto - el backend está en /api/v1/users
+const usersEndpointPath = '/api/v1/users';
 
 export class UsersApi extends BaseApi {
   #usersEndpoint
 
   constructor() {
     super();
-    this.#usersEndpoint = new BaseEndpoint(this, usersEndpointPath);
+    // Forzar el endpoint correcto
+    const endpoint = '/api/v1/users';
+    console.log('🚀 UsersApi constructor - Endpoint path:', endpoint);
+    console.log('🚀 Base API URL:', this.http.defaults.baseURL);
+    this.#usersEndpoint = new BaseEndpoint(this, endpoint);
+    console.log('🚀 Endpoint configurado:', this.#usersEndpoint.endpointPath);
   }
 
   async list(params = {}) {
+    console.log('🔍 UsersApi.list() - Endpoint:', this.#usersEndpoint.endpointPath);
     const response = await this.#usersEndpoint.getAll(params);
     return UserAssembler.toEntitiesFromResponse(response);
   }
@@ -23,6 +30,8 @@ export class UsersApi extends BaseApi {
   }
 
   async create(user) {
+    console.log('📝 UsersApi.create() - Endpoint:', this.#usersEndpoint.endpointPath);
+    console.log('📝 Payload:', JSON.stringify(UserAssembler.toCreateResource(user), null, 2));
     const payload = UserAssembler.toCreateResource(user);
     const response = await this.#usersEndpoint.create(payload);
     return UserAssembler.toEntityFromResource(response.data);
@@ -31,6 +40,10 @@ export class UsersApi extends BaseApi {
   async update(user) {
     const payload = UserAssembler.toUpdateResource(user);
     const response = await this.#usersEndpoint.update(user.id, payload);
+    // El backend devuelve NoContent (204), así que obtenemos el usuario actualizado
+    if (response.status === 204 || !response.data) {
+      return await this.getById(user.id);
+    }
     return UserAssembler.toEntityFromResource(response.data);
   }
 
@@ -52,7 +65,12 @@ export class UsersApi extends BaseApi {
   }
 
   async updateStatus(id, status) {
-    const response = await this.#usersEndpoint.patch(id, { status });
+    // El backend espera "status" en minúsculas según el controlador
+    const response = await this.#usersEndpoint.patch(id, { status: status });
+    // El backend devuelve NoContent (204), así que obtenemos el usuario actualizado
+    if (response.status === 204 || !response.data) {
+      return await this.getById(id);
+    }
     return UserAssembler.toEntityFromResource(response.data);
   }
 
