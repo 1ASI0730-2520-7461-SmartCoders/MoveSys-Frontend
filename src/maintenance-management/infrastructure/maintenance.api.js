@@ -2,13 +2,17 @@ import { BaseApi } from '../../shared/infrastructure/base-api.js';
 import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
 import { MaintenanceAssembler } from './maintenance.assembler.js';
 
-const maintenanceEndpointPath = import.meta.env?.VITE_MAINTENANCE_ENDPOINT_PATH || '/maintenances';
+// Forzar el endpoint correcto - el backend está en /api/v1/maintenances
+const maintenanceEndpointPath = '/api/v1/maintenances';
 
 export class MaintenanceApi extends BaseApi {
   #endpoint
   constructor() {
     super();
-    this.#endpoint = new BaseEndpoint(this, maintenanceEndpointPath);
+    // Asegurar que siempre use el endpoint correcto
+    const endpoint = '/api/v1/maintenances';
+    console.log('🔧 MaintenanceApi inicializado con endpoint:', endpoint);
+    this.#endpoint = new BaseEndpoint(this, endpoint);
   }
 
   async list(params = {}) {
@@ -40,6 +44,8 @@ export class MaintenanceApi extends BaseApi {
     }
   }
 }
+
+
 
 
 
