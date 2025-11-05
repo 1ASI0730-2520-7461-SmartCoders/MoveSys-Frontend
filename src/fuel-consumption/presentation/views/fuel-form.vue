@@ -47,11 +47,12 @@ const validationRules = {
 }
 
 // Computed para listar vehículos disponibles
+// Solo mostrar vehículos que están en ruta (in_use)
 const availableVehicles = computed(() => {
   return (vehiclesStore.vehicles || [])
-    .filter(v => v.status === 'available' || v.status === 'in_use')
+    .filter(v => v.status === 'in_use')
     .map(v => ({
-      label: `${v.licensePlate || v.license_plate} - ${v.brand} ${v.model}`,
+      label: `${v.licensePlate || v.license_plate}`,
       value: v.id,
       plate: v.licensePlate || v.license_plate,
       model: `${v.brand} ${v.model}`,
