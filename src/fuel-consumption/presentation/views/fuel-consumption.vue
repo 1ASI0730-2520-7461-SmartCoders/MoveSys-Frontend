@@ -30,10 +30,11 @@ const form = ref({
 const formErrors = ref({})
 
 const availableVehicles = computed(() => {
+  // Solo mostrar vehículos que están en ruta (in_use)
   return vehiclesStore.vehicles
-    .filter(v => v.status === 'available' || v.status === 'in_use')
+    .filter(v => v.status === 'in_use')
     .map(v => ({
-      label: `${v.licensePlate} - ${v.brand} ${v.model}`,
+      label: `${v.licensePlate}`,
       value: v.id,
       plate: v.licensePlate,
       model: `${v.brand} ${v.model}`,
