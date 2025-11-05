@@ -40,7 +40,7 @@ const availableVehicles = computed(() => {
   return vehiclesStore.vehicles
     .filter(v => v.status === 'available' || v.status === 'in_use' || v.status === 'maintenance')
     .map(v => ({
-      label: `${v.licensePlate} - ${v.brand} ${v.model}`,
+      label: `${v.licensePlate}`,
       value: v.id,
       plate: v.licensePlate,
       model: `${v.brand} ${v.model}`,
