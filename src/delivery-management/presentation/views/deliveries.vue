@@ -6,6 +6,7 @@ import { useDeliveriesStore } from '../../application/deliveries.store.js'
 import { useVehiclesStore } from '../../../fleet-management/application/vehicles.store.js'
 import { useUsersStore } from '../../../ user-management/application/users.store.js'
 import { ValidationService } from '../../../shared/infrastructure/validation.service.js'
+import { useConfirm } from 'primevue/useconfirm'
 
 const { t } = useI18n()
 
@@ -13,6 +14,8 @@ const router = useRouter()
 const store = useDeliveriesStore()
 const vehiclesStore = useVehiclesStore()
 const usersStore = useUsersStore()
+
+const confirm = useConfirm()
 
 const dialogVisible = ref(false)
 const editMode = ref(false)
@@ -121,6 +124,15 @@ const openEdit = (delivery) => {
   router.push(`/deliveries/formulario/${delivery.id}`)
 }
 
+const confirmDelete = (delivery) => {
+  confirm.require({
+    message: t('deliveries.confirmDelete', { code: delivery.code }),
+    header: t('deliveries.confirmDeleteHeader'),
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => store.deleteDelivery(delivery.id)
+  })
+}
+
 
 const save = async () => {
   if (!validateForm()) return
@@ -198,25 +210,12 @@ onMounted(() => {
           </template>
         </pv-column>
         <pv-column field="status" :header="t('deliveries.table.status')" sortable />
-        <pv-column :header="t('deliveries.table.assignment')" :style="{ width: '140px' }">
+        <pv-column :header="t('common.actions')" :style="{ width: '150px' }">
           <template #body="{ data }">
-            <div v-if="(data.driverName || resolveDriverName(data)) && data.vehiclePlate" class="flex align-items-center gap-1">
-              <i class="pi pi-check-circle text-green-500"></i>
-              <span class="text-green-600 text-sm">{{ t('deliveries.assignment.complete') }}</span>
+            <div class="flex gap-1">
+              <pv-button icon="pi pi-pencil" size="small" text rounded severity="info" @click="openEdit(data)" v-tooltip.top="t('common.edit')" />
+              <pv-button icon="pi pi-trash" size="small" text rounded severity="danger" @click="confirmDelete(data)" v-tooltip.top="t('common.delete')" />
             </div>
-            <div v-else-if="(data.driverName || resolveDriverName(data)) || data.vehiclePlate" class="flex align-items-center gap-1">
-              <i class="pi pi-exclamation-triangle text-orange-500"></i>
-              <span class="text-orange-600 text-sm">{{ t('deliveries.assignment.partial') }}</span>
-            </div>
-            <div v-else class="flex align-items-center gap-1">
-              <i class="pi pi-times-circle text-red-500"></i>
-              <span class="text-red-600 text-sm">{{ t('deliveries.assignment.unassigned') }}</span>
-            </div>
-          </template>
-        </pv-column>
-        <pv-column :header="t('common.actions')" :style="{ width: '120px' }">
-          <template #body="{ data }">
-            <pv-button icon="pi pi-pencil" size="small" text rounded severity="info" @click="openEdit(data)" v-tooltip.top="t('common.edit')" />
           </template>
         </pv-column>
       </pv-data-table>
@@ -297,6 +296,9 @@ onMounted(() => {
         </div>
       </template>
     </pv-dialog>
+
+    <!-- Confirm Dialog -->
+    <pv-confirm-dialog />
   </div>
 </template>
 
