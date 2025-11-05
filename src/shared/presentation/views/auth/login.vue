@@ -11,6 +11,10 @@ const loading = ref(false)
 const emailError = ref('')
 const passwordError = ref('')
 
+const goToRegister = () => {
+  router.push('/register')
+}
+
 const isFormValid = computed(() => {
   return email.value.trim().length > 0 && password.value.trim().length > 0
 })
@@ -160,6 +164,18 @@ const handleLogin = async () => {
               :disabled="!isFormValid"
               class="login-button"
             />
+
+            <!-- Register Link -->
+            <div class="register-section">
+              <p class="register-text">{{ t('auth.dontHaveAccount') }}</p>
+              <pv-button 
+                :label="t('auth.register')"
+                icon="pi pi-user-plus"
+                class="register-button-link"
+                text
+                @click="goToRegister"
+              />
+            </div>
           </form>
         </template>
       </pv-card>
@@ -356,6 +372,26 @@ const handleLogin = async () => {
   cursor: not-allowed;
 }
 
+.register-section {
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.register-text {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.register-button-link {
+  color: #6366f1;
+  font-weight: 600;
+}
+
+.register-button-link:hover {
+  color: #4f46e5;
+}
 
 @media (max-width: 640px) {
   .login-container {
