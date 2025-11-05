@@ -2,7 +2,8 @@ import { BaseApi } from '../../shared/infrastructure/base-api.js';
 import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
 import { FuelEntryAssembler } from './fuel-entry.assembler.js';
 
-const fuelEndpointPath = import.meta.env?.VITE_FUEL_ENDPOINT_PATH || '/fuel-entries';
+// Forzar el endpoint correcto - el backend está en /api/v1/fuel-entries
+const fuelEndpointPath = '/api/v1/fuel-entries';
 
 export class FuelApi extends BaseApi {
   #endpoint
