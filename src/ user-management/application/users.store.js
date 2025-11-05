@@ -12,8 +12,8 @@ export const useUsersStore = defineStore('users', () => {
   const loading = ref(false);
   const errors = ref([]);
   const searchQuery = ref('');
-  const selectedRole = ref('driver');
-  const selectedStatus = ref('active');
+  const selectedRole = ref('all');
+  const selectedStatus = ref('all');
 
   const totalUsers = computed(() => users.value.length);
   
@@ -21,15 +21,22 @@ export const useUsersStore = defineStore('users', () => {
     users.value.filter(user => user.isActive)
   );
 
-  const usersByRole = computed(() => users.value.filter(user => user.role === 'driver'));
+  const usersByRole = computed(() => users.value);
 
   const filteredUsers = computed(() => {
     let filtered = users.value;
 
-    filtered = filtered.filter(user => user.role === 'driver');
+    // Filtrar por rol solo si hay un filtro seleccionado
+    if (selectedRole.value && selectedRole.value !== 'all') {
+      filtered = filtered.filter(user => user.role === selectedRole.value);
+    }
 
-    filtered = filtered.filter(user => user.status === 'active');
+    // Filtrar por estado solo si hay un filtro seleccionado
+    if (selectedStatus.value && selectedStatus.value !== 'all') {
+      filtered = filtered.filter(user => user.status === selectedStatus.value);
+    }
 
+    // Búsqueda por texto
     if (searchQuery.value) {
       const query = searchQuery.value.toLowerCase();
       filtered = filtered.filter(user => 
@@ -43,11 +50,17 @@ export const useUsersStore = defineStore('users', () => {
   });
 
   const roleOptions = computed(() => [
-    { label: 'Conductor', value: 'driver' }
+    { label: 'Todos', value: 'all' },
+    { label: 'Conductor', value: 'driver' },
+    { label: 'Operador', value: 'operator' },
+    { label: 'Administrador', value: 'admin' }
   ]);
 
   const statusOptions = computed(() => [
-    { label: 'Activo', value: 'active' }
+    { label: 'Todos', value: 'all' },
+    { label: 'Activo', value: 'active' },
+    { label: 'Inactivo', value: 'inactive' },
+    { label: 'Suspendido', value: 'suspended' }
   ]);
 
   async function fetchUsers(params = {}) {
