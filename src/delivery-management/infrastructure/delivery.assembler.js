@@ -3,21 +3,20 @@ import { Delivery } from '../domain/delivery.entity.js';
 export class DeliveryAssembler {
   static toEntityFromResource(resource) {
     return new Delivery({
-      id: resource.id,
-      code: resource.code,
-      customerName: resource.customerName,
-      address: resource.address,
-      originProvince: resource.origin_province || resource.originProvince,
-      destinationProvince: resource.destination_province || resource.destinationProvince,
-      scheduledAt: resource.scheduledAt ? new Date(resource.scheduledAt) : null,
-      status: resource.status,
-      vehicleId: resource.vehicleId,
-      vehiclePlate: resource.vehicle_plate || resource.vehiclePlate,
-      driverName: resource.driverName,
-      distanceKm: resource.distance_km || resource.distanceKm,
-      etaMinutes: resource.eta_minutes || resource.etaMinutes,
-      createdAt: resource.createdAt ? new Date(resource.createdAt) : null,
-      updatedAt: resource.updatedAt ? new Date(resource.updatedAt) : null,
+      id: resource.id || resource.Id,
+      code: resource.Code || resource.code,
+      customerName: resource.CustomerName || resource.customerName,
+      address: resource.Address || resource.address,
+      originProvince: resource.OriginProvince || resource.originProvince || resource.origin_province,
+      destinationProvince: resource.DestinationProvince || resource.destinationProvince || resource.destination_province,
+      scheduledAt: resource.ScheduledAt || resource.scheduledAt ? new Date(resource.ScheduledAt || resource.scheduledAt) : null,
+      status: resource.Status || resource.status || 'pending',
+      vehicleId: resource.VehicleId || resource.vehicleId,
+      vehiclePlate: resource.VehiclePlate || resource.vehiclePlate || resource.vehicle_plate,
+      driverName: resource.DriverName || resource.driverName,
+      distanceKm: resource.DistanceKm || resource.distanceKm || resource.distance_km,
+      etaMinutes: resource.EtaMinutes || resource.etaMinutes || resource.eta_minutes
+      // Eliminamos createdAt y updatedAt
     });
   }
 
@@ -27,24 +26,42 @@ export class DeliveryAssembler {
   }
 
   static toCreateResource(entity) {
+    // El backend acepta camelCase (formato estándar de APIs REST)
     return {
       code: entity.code,
       customerName: entity.customerName,
       address: entity.address,
-      origin_province: entity.originProvince,
-      destination_province: entity.destinationProvince,
+      originProvince: entity.originProvince,
+      destinationProvince: entity.destinationProvince,
       scheduledAt: entity.scheduledAt,
-      status: entity.status,
+      status: entity.status || 'pending',
       vehicleId: entity.vehicleId,
-      vehicle_plate: entity.vehiclePlate,
+      vehiclePlate: entity.vehiclePlate,
       driverName: entity.driverName,
-      distance_km: entity.distanceKm,
-      eta_minutes: entity.etaMinutes,
+      distanceKm: entity.distanceKm,
+      etaMinutes: entity.etaMinutes
     };
   }
 
   static toUpdateResource(entity) {
-    return this.toCreateResource(entity);
+    // El id va en la URL, no en el body
+    // Asegurar que todos los campos requeridos estén presentes
+    const resource = {
+      code: entity.code || '',
+      customerName: entity.customerName || '',
+      address: entity.address || '',
+      originProvince: entity.originProvince || '',
+      destinationProvince: entity.destinationProvince || '',
+      status: entity.status || 'pending',
+      // Campos opcionales - solo enviar si tienen valor
+      ...(entity.scheduledAt && { scheduledAt: entity.scheduledAt }),
+      ...(entity.vehicleId && { vehicleId: entity.vehicleId }),
+      ...(entity.vehiclePlate && { vehiclePlate: entity.vehiclePlate }),
+      ...(entity.driverName && { driverName: entity.driverName }),
+      ...(entity.distanceKm !== null && entity.distanceKm !== undefined && { distanceKm: entity.distanceKm }),
+      ...(entity.etaMinutes !== null && entity.etaMinutes !== undefined && { etaMinutes: entity.etaMinutes })
+    };
+    return resource;
   }
 }
 
