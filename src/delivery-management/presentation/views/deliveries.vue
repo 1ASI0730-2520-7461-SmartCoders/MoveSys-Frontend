@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useDeliveriesStore } from '../../application/deliveries.store.js'
 import { useVehiclesStore } from '../../../fleet-management/application/vehicles.store.js'
-import { useUsersStore } from '../../../ user-management/application/users.store.js'
+import { useUsersStore } from '../../../user-management/application/users.store.js'
 import { ValidationService } from '../../../shared/infrastructure/validation.service.js'
 import { useConfirm } from 'primevue/useconfirm'
 
