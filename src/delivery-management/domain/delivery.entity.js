@@ -10,10 +10,9 @@ export class Delivery {
     status = 'pending',
     vehicleId = null,
     vehiclePlate = '',
+    driverName = '',
     etaMinutes = null,
-    distanceKm = null,
-    createdAt = null,
-    updatedAt = null
+    distanceKm = null
   } = {}) {
     this.id = id;
     this.code = code;
@@ -25,10 +24,9 @@ export class Delivery {
     this.status = status;
     this.vehicleId = vehicleId;
     this.vehiclePlate = vehiclePlate;
+    this.driverName = driverName;
     this.etaMinutes = etaMinutes;
     this.distanceKm = distanceKm;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
   }
 
   get isPending() {
