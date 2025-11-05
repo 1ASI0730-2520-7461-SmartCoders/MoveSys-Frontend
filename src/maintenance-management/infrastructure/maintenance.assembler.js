@@ -28,29 +28,50 @@ export class MaintenanceAssembler {
   }
 
   static toCreateResource(entity) {
-    return {
-      vehicle_id: entity.vehicleId,
-      vehicle_plate: entity.vehiclePlate,
-      model: entity.model,
-      maintenance_type: entity.maintenanceType,
-      description: entity.description,
-      cost: entity.cost,
-      mileage: entity.mileage,
-      maintenance_date: entity.maintenanceDate,
-      next_maintenance_date: entity.nextMaintenanceDate,
-      next_maintenance_mileage: entity.nextMaintenanceMileage,
-      provider: entity.provider,
-      parts: entity.parts,
-      mechanic: entity.mechanic,
-      notes: entity.notes,
-      status: entity.status
+    // El backend acepta camelCase (formato estándar de APIs REST)
+    // El campo 'parts' debe ser un string JSON, no un array
+    let partsString = null;
+    if (entity.parts && Array.isArray(entity.parts) && entity.parts.length > 0) {
+      // Filtrar partes vacías antes de serializar
+      const validParts = entity.parts.filter(p => p && (p.name || p.cost > 0));
+      if (validParts.length > 0) {
+        partsString = JSON.stringify(validParts);
+      }
+    }
+    
+    // Asegurar que description tenga un valor (es requerido)
+    const description = entity.description && entity.description.trim() !== '' 
+      ? entity.description.trim() 
+      : '';
+    
+    const resource = {
+      vehicleId: entity.vehicleId || null,
+      vehiclePlate: entity.vehiclePlate || '',
+      model: entity.model || null,
+      maintenanceType: entity.maintenanceType || 'preventive',
+      description: description,
+      cost: entity.cost != null && entity.cost !== '' ? Number(entity.cost) : 0,
+      mileage: entity.mileage != null && entity.mileage !== '' ? Number(entity.mileage) : null,
+      maintenanceDate: entity.maintenanceDate || null,
+      nextMaintenanceDate: entity.nextMaintenanceDate || null,
+      nextMaintenanceMileage: entity.nextMaintenanceMileage != null && entity.nextMaintenanceMileage !== '' ? Number(entity.nextMaintenanceMileage) : null,
+      provider: entity.provider || '',
+      parts: partsString,
+      mechanic: entity.mechanic || null,
+      notes: entity.notes || null,
+      status: entity.status || 'scheduled'
     };
+    
+    console.log('🔧 MaintenanceAssembler - Datos a enviar al backend:', resource);
+    return resource;
   }
 
   static toUpdateResource(entity) {
     return this.toCreateResource(entity);
   }
 }
+
+
 
 
 
