@@ -2,14 +2,16 @@ import { BaseApi } from '../../shared/infrastructure/base-api.js';
 import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
 import { DeliveryAssembler } from './delivery.assembler.js';
 
-const deliveriesEndpointPath = import.meta.env?.VITE_DELIVERIES_ENDPOINT_PATH || '/deliveries';
+// Forzar el endpoint correcto - el backend está en /api/v1/deliveries
+const deliveriesEndpointPath = '/api/v1/deliveries';
 
 export class DeliveriesApi extends BaseApi {
   #endpoint
 
   constructor() {
     super();
-    this.#endpoint = new BaseEndpoint(this, deliveriesEndpointPath);
+    const endpoint = '/api/v1/deliveries';
+    this.#endpoint = new BaseEndpoint(this, endpoint);
   }
 
   async list(params = {}) {
@@ -30,13 +32,12 @@ export class DeliveriesApi extends BaseApi {
 
   async update(delivery) {
     const payload = DeliveryAssembler.toUpdateResource(delivery);
-    try {
-      const response = await this.#endpoint.update(delivery.id, payload);
-      return DeliveryAssembler.toEntityFromResource(response.data);
-    } catch (error) {
-      const response = await this.#endpoint.patch(delivery.id, payload);
-      return DeliveryAssembler.toEntityFromResource(response.data);
+    const response = await this.#endpoint.update(delivery.id, payload);
+    // El backend devuelve NoContent (204), así que obtenemos la entrega actualizada
+    if (response.status === 204 || !response.data) {
+      return await this.getById(delivery.id);
     }
+    return DeliveryAssembler.toEntityFromResource(response.data);
   }
 
   async remove(id) {
