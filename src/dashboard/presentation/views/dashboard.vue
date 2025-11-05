@@ -125,11 +125,11 @@ h2 {
   .pi {
     font-size: 2.5rem !important;
   }
-  
+
   .card {
     min-height: 180px;
   }
-  
+
   h2 {
     font-size: 2rem;
   }

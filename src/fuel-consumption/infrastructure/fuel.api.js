@@ -28,7 +28,7 @@ export class FuelApi extends BaseApi {
     return FuelEntryAssembler.toEntityFromResource(response.data);
   }
 
-  async remove(id) {
+ async remove(id) {
     try {
       await this.#endpoint.delete(id);
       return true;
@@ -40,9 +40,5 @@ export class FuelApi extends BaseApi {
     }
   }
 }
-
-
-
-
 
 
