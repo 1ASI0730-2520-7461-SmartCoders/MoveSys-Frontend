@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <pv-toast />
-    <!-- Use main layout for authenticated routes -->
-    <MainLayout v-if="isAuthenticated" />
+    <!-- Use main layout for authenticated routes (exclude login/register) -->
+    <!-- El router guard maneja las redirecciones, aquí solo decidimos qué layout mostrar -->
+    <MainLayout v-if="showMainLayout" />
     <!-- Use simple layout for auth pages -->
     <router-view v-else />
   </div>
@@ -17,17 +18,20 @@ import MainLayout from './shared/presentation/components/layout/main-layout.vue'
 
 const route = useRoute()
 
-const isAuthenticated = computed(() => {
+// Verificar si debemos mostrar el MainLayout
+// Solo lo mostramos si NO estamos en login/register y hay un token válido
+const showMainLayout = computed(() => {
+  const isAuthPage = route.path === '/login' || route.path === '/register'
+  
+  if (isAuthPage) {
+    return false // Nunca mostrar MainLayout en login/register
+  }
+  
+  // Si no es página de auth, verificar token
   const token = localStorage.getItem('movesys_token')
-  const authenticated = token !== null && route.path !== '/login' && route.path !== '/register'
+  const hasValidToken = token !== null && token !== '' && token !== 'dev-token-123'
   
-  console.log('🔍 App.vue - Estado de autenticación:', {
-    token: token ? 'presente' : 'ausente',
-    route: route.path,
-    authenticated
-  })
-  
-  return authenticated
+  return hasValidToken
 })
 
 onMounted(() => {
@@ -37,15 +41,12 @@ onMounted(() => {
   const toast = useToast()
   notificationService.setToastInstance(toast)
   
-  // Set temporary token for development
-  if (!localStorage.getItem('movesys_token')) {
-    localStorage.setItem('movesys_token', 'dev-token-123')
-    localStorage.setItem('movesys_user', JSON.stringify({
-      name: 'Developer User',
-      email: 'dev@movesys.com',
-      role: 'admin'
-    }))
-    console.log('🔑 Temporary token set for development')
+  // Limpiar tokens inválidos o de desarrollo
+  const token = localStorage.getItem('movesys_token')
+  if (token === 'dev-token-123' || token === '' || token === null) {
+    localStorage.removeItem('movesys_token')
+    localStorage.removeItem('movesys_user')
+    console.log('🧹 Token inválido eliminado')
   }
 })
 </script>
