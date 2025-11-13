@@ -30,7 +30,7 @@ const menuItems = computed(() => [
   {
     label: t('navigation.users'),
     icon: 'pi pi-users',
-    route: '/users'
+    route: '/conductores'
   },
   {
     label: t('navigation.fleetManagement'),
@@ -54,7 +54,7 @@ const menuItems = computed(() => [
   }
 ])
 
-const menuModel = ref([
+const menuModel = computed(() => [
   {
     label: t('navigation.dashboard'),
     icon: 'pi pi-home',
@@ -72,9 +72,9 @@ const menuModel = ref([
   {
     label: t('navigation.users'),
     icon: 'pi pi-users',
-    command: () => navigateTo('/users'),
-    class: () => route.path === '/users' ? 'active-menu-item' : '',
-    style: () => route.path === '/users' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
+    command: () => navigateTo('/conductores'),
+    class: () => route.path === '/conductores' ? 'active-menu-item' : '',
+    style: () => route.path === '/conductores' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
   },
   {
     label: t('navigation.fleetManagement'),
@@ -91,7 +91,7 @@ const menuModel = ref([
     style: () => route.path === '/fuel-consumption' ? 'background: rgba(99, 102, 241, 0.23); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); color: rgba(43, 47, 48, 0.9);' : ''
   },
   {
-    label: 'Mantenimiento',
+    label: t('navigation.maintenance'),
     icon: 'pi pi-wrench',
     command: () => navigateTo('/maintenance'),
     class: () => route.path === '/maintenance' ? 'active-menu-item' : '',
@@ -206,14 +206,14 @@ const handleLogout = () => {
 
 .sidebar-nav {
   flex: 1;
-  padding: 16px 0;
+  padding: 20px 0;
 }
 
 /* Estilos para la navegación con botones */
 .button-navigation {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
   padding: 0 20px;
 }
 
@@ -224,8 +224,8 @@ const handleLogout = () => {
 .nav-button {
   width: 100%;
   justify-content: flex-start !important;
-  padding: 12px 16px !important;
-  margin: 4px 0 !important;
+  padding: 14px 16px !important;
+  margin: 8px 0 !important;
   border-radius: 8px !important;
   transition: all 0.3s ease !important;
   color: rgba(43, 47, 48, 0.74) !important;
