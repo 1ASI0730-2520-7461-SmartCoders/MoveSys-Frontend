@@ -30,13 +30,13 @@
     "title": "Dashboard",
     "welcome": "Welcome to MoveSys",
     "quickAccess": "Quick Access",
-    "usersDescription": "Manage system users",
+    "usersDescription": "Manage system drivers",
     "deliveriesDescription": "Manage deliveries",
     "fleetDescription": "Control vehicles and drivers",
     "fuelDescription": "Record and analyze fuel consumption",
     "maintenanceDescription": "Manage vehicle maintenance",
     "reportsDescription": "View statistics and metrics",
-    "goToUsers": "Go to Users",
+    "goToUsers": "Go to Drivers",
     "goToDeliveries": "Go to Deliveries",
     "goToFleet": "Go to Fleet",
     "goToFuel": "Go to Fuel",
@@ -44,13 +44,13 @@
     "goToReports": "Go to Reports"
   },
   "navigation": {
-    "dashboard": "Dashboard",
-    "deliveries": "Deliveries",
-    "users": "Users",
-    "fleetManagement": "Fleet Management",
-    "fuelConsumption": "Fuel Consumption",
-    "maintenance": "Maintenance",
-    "reports": "Reports",
+    "dashboard": "Panel",
+    "deliveries": "Delivery Orders",
+    "users": "Drivers",
+    "fleetManagement": "Active Fleet",
+    "fuelConsumption": "Fuel & Costs",
+    "maintenance": "Maintenances",
+    "reports": "Operational Data",
     "logout": "Logout"
   },
   "common": {
@@ -77,26 +77,34 @@
   },
   "forms": {
     "validation": {
-      "firstNameRequired": "First name is required",
-      "lastNameRequired": "Last name is required",
-      "dniRequired": "DNI is required",
-      "phoneRequired": "Phone is required",
+      "codeRequired": "Code required",
+      "customerNameRequired": "Customer name required",
+      "addressRequired": "Address required",
+      "originProvinceRequired": "Origin province required",
+      "destinationProvinceRequired": "Destination province required",
+      "licensePlateRequired": "License plate required",
+      "brandRequired": "Brand required",
+      "modelRequired": "Model required",
+      "yearRequired": "Year required",
+      "firstNameRequired": "First name required",
+      "lastNameRequired": "Last name required",
+      "dniRequired": "DNI required",
+      "phoneRequired": "Phone required",
       "firstNameMinLength": "First name must be at least 2 characters",
       "lastNameMinLength": "Last name must be at least 2 characters",
-      "dniMinLength": "DNI must be at least 7 characters",
-      "phoneValid": "Please enter a valid phone number",
-      "codeRequired": "Code is required",
-      "customerNameRequired": "Customer name is required",
-      "customerNameMinLength": "Customer name must be at least 3 characters",
-      "addressRequired": "Address is required"
+      "dniMinLength": "DNI must be at least 6 characters",
+      "phoneValid": "Phone must be valid",
+      "customerNameMinLength": "Customer name must be at least 3 characters"
     },
     "user": {
-      "newUser": "New User",
-      "editUser": "Edit User",
+      "title": "Driver",
+      "newUser": "New Driver",
+      "editUser": "Edit Driver",
       "firstName": "First Name",
       "lastName": "Last Name",
       "dni": "DNI",
       "phone": "Phone",
+      "phoneNumber": "Phone Number",
       "role": "Role",
       "status": "Status",
       "roleOptions": {
@@ -165,46 +173,6 @@
         "maintenance": "Maintenance",
         "outOfService": "Out of Service"
       }
-    },
-    "user": {
-      "title": "User",
-      "newUser": "New User",
-      "editUser": "Edit User",
-      "firstName": "First Name",
-      "lastName": "Last Name",
-      "dni": "DNI",
-      "phoneNumber": "Phone Number",
-      "role": "Role",
-      "status": "Status",
-      "roleOptions": {
-        "driver": "Driver",
-        "admin": "Administrator",
-        "operator": "Operator"
-      },
-      "statusOptions": {
-        "active": "Active",
-        "inactive": "Inactive",
-        "suspended": "Suspended"
-      }
-    },
-    "validation": {
-      "codeRequired": "Code required",
-      "customerNameRequired": "Customer name required",
-      "addressRequired": "Address required",
-      "originProvinceRequired": "Origin province required",
-      "destinationProvinceRequired": "Destination province required",
-      "licensePlateRequired": "License plate required",
-      "brandRequired": "Brand required",
-      "modelRequired": "Model required",
-      "yearRequired": "Year required",
-      "firstNameRequired": "First name required",
-      "lastNameRequired": "Last name required",
-      "dniRequired": "DNI required",
-      "phoneRequired": "Phone required",
-      "firstNameMinLength": "First name must be at least 2 characters",
-      "lastNameMinLength": "Last name must be at least 2 characters",
-      "dniMinLength": "DNI must be at least 6 characters",
-      "phoneValid": "Phone must be valid"
     }
   },
   "reporting": {
@@ -216,26 +184,26 @@
     "searchDriver": "Driver name..."
   },
   "users": {
-    "title": "User Management",
-    "subtitle": "Manage system users",
-    "newUser": "New User",
-    "userList": "User List",
-    "usersFound": "{count} users found",
+    "title": "Driver Management",
+    "subtitle": "Manage system drivers",
+    "newUser": "New Driver",
+    "userList": "Driver List",
+    "usersFound": "{count} drivers found",
     "clearFilters": "Clear Filters",
     "activate": "Activate",
     "deactivate": "Deactivate",
     "fixed": "fixed",
-    "confirmDelete": "Are you sure you want to delete user {name}?",
+    "confirmDelete": "Are you sure you want to delete driver {name}?",
     "confirmDeleteHeader": "Confirm Deletion",
     "search": {
-      "placeholder": "Search users..."
+      "placeholder": "Search drivers..."
     },
     "filters": {
       "role": "Filter by role",
       "status": "Filter by status"
     },
     "stats": {
-      "total": "Total Users",
+      "total": "Total Drivers",
       "active": "Active",
       "inactive": "Inactive",
       "filtered": "Filtered"
@@ -250,7 +218,7 @@
     },
     "export": {
       "button": "Export",
-      "filename": "users.csv",
+      "filename": "drivers.csv",
       "id": "ID",
       "firstName": "First Name",
       "lastName": "Last Name",
