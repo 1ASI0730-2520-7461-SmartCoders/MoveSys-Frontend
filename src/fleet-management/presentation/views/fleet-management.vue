@@ -3,7 +3,7 @@ import { onMounted, ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useVehiclesStore } from '../../application/vehicles.store.js'
-import { useUsersStore } from '../../../ user-management/application/users.store.js'
+import { useConductoresStore } from '../../../conductores/application/conductores.store.js'
 import { useMaintenanceStore } from '../../../maintenance-management/application/maintenance.store.js'
 import { ValidationService } from '../../../shared/infrastructure/validation.service.js'
 
@@ -11,7 +11,7 @@ const { t } = useI18n()
 
 const router = useRouter()
 const store = useVehiclesStore()
-const usersStore = useUsersStore()
+const conductoresStore = useConductoresStore()
 const maintenanceStore = useMaintenanceStore()
 
 const vehiclesWithMaintenanceStatus = computed(() => {
@@ -90,8 +90,8 @@ const save = async () => {
 
 onMounted(() => {
   store.fetchVehicles()
-  if (!usersStore.users?.length) {
-    usersStore.fetchUsers()
+  if (!conductoresStore.conductores?.length) {
+    conductoresStore.fetchConductores()
   }
   maintenanceStore.fetchRecords()
 })
@@ -134,9 +134,9 @@ const selectedVehicle = ref(null)
 const selectedDriver = ref(null)
 
 const driversOptions = computed(() =>
-  (usersStore.users || [])
-    .filter(u => u.status === 'active' && u.role === 'driver')
-    .map(u => ({ label: `${u.fullName} - DNI ${u.dni}`, value: u.fullName }))
+  (conductoresStore.conductores || [])
+    .filter(c => c.status === 'active' && c.role === 'driver')
+    .map(c => ({ label: `${c.fullName} - DNI ${c.dni}`, value: c.fullName }))
 )
 
 const openAssignDriver = (vehicle) => {
