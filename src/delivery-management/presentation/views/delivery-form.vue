@@ -4,7 +4,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useDeliveriesStore } from '../../application/deliveries.store.js'
 import { useVehiclesStore } from '../../../fleet-management/application/vehicles.store.js'
-import { useUsersStore } from '../../../ user-management/application/users.store.js'
+import { useConductoresStore } from '../../../conductores/application/conductores.store.js'
 import { ValidationService } from '../../../shared/infrastructure/validation.service.js'
 
 const { t } = useI18n()
@@ -13,7 +13,7 @@ const router = useRouter()
 const route = useRoute()
 const deliveriesStore = useDeliveriesStore()
 const vehiclesStore = useVehiclesStore()
-const usersStore = useUsersStore()
+const conductoresStore = useConductoresStore()
 
 const form = ref({
   code: '',
@@ -183,8 +183,8 @@ onMounted(async () => {
   if (!vehiclesStore.vehicles.length) {
     await vehiclesStore.fetchVehicles()
   }
-  if (!usersStore.users.length) {
-    await usersStore.fetchUsers()
+  if (!conductoresStore.conductores.length) {
+    await conductoresStore.fetchConductores()
   }
 })
 </script>
