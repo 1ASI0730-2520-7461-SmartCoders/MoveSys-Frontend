@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useVehiclesStore } from '../../application/vehicles.store.js'
-import { useUsersStore } from '../../../ user-management/application/users.store.js'
+import { useUsersStore } from '../../../user-management/application/users.store.js'
 import { ValidationService } from '../../../shared/infrastructure/validation.service.js'
 
 const { t } = useI18n()
