@@ -2,44 +2,25 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useUsersStore } from '../../../../user-management/application/users.store.js'
+import { AuthApi } from '../../../infrastructure/auth-api.js'
+import { notificationService } from '../../../infrastructure/notification.service.js'
 
 const { t } = useI18n()
 const router = useRouter()
-const usersStore = useUsersStore()
+const authApi = new AuthApi()
 
-const firstName = ref('')
-const lastName = ref('')
 const email = ref('')
 const password = ref('')
-const dni = ref('')
-const phoneNumber = ref('')
 const loading = ref(false)
 const errors = ref({})
 
 const isFormValid = computed(() => {
-  return firstName.value.trim().length > 0 &&
-         lastName.value.trim().length > 0 &&
-         email.value.trim().length > 0 &&
-         password.value.trim().length >= 6 &&
-         dni.value.trim().length >= 6 &&
-         phoneNumber.value.trim().length > 0
+  return email.value.trim().length > 0 &&
+         password.value.trim().length >= 6
 })
 
 const validateForm = () => {
   errors.value = {}
-
-  if (!firstName.value.trim()) {
-    errors.value.firstName = 'El nombre es requerido'
-  } else if (firstName.value.trim().length < 2) {
-    errors.value.firstName = 'El nombre debe tener al menos 2 caracteres'
-  }
-
-  if (!lastName.value.trim()) {
-    errors.value.lastName = 'El apellido es requerido'
-  } else if (lastName.value.trim().length < 2) {
-    errors.value.lastName = 'El apellido debe tener al menos 2 caracteres'
-  }
 
   if (!email.value.trim()) {
     errors.value.email = 'El correo es requerido'
@@ -53,16 +34,6 @@ const validateForm = () => {
     errors.value.password = 'La contraseña debe tener al menos 6 caracteres'
   }
 
-  if (!dni.value.trim()) {
-    errors.value.dni = 'El DNI es requerido'
-  } else if (dni.value.trim().length < 6) {
-    errors.value.dni = 'El DNI debe tener al menos 6 caracteres'
-  }
-
-  if (!phoneNumber.value.trim()) {
-    errors.value.phoneNumber = 'El teléfono es requerido'
-  }
-
   return Object.keys(errors.value).length === 0
 }
 
@@ -74,24 +45,20 @@ const handleRegister = async () => {
   loading.value = true
   
   try {
-    const userData = {
-      firstName: firstName.value.trim(),
-      lastName: lastName.value.trim(),
-      dni: dni.value.trim(),
-      phoneNumber: phoneNumber.value.trim(),
-      role: 'operator', // Solo operadores pueden registrarse
-      status: 'active'
+    // Solo enviar Email y Password para crear un operario del sistema
+    // Los conductores se crean por separado en el módulo de Conductores
+    const registerData = {
+      email: email.value.trim(),
+      password: password.value.trim()
     }
     
-    await usersStore.addUser(userData)
+    await authApi.signUp(registerData)
+    
+    notificationService.success('Operario registrado exitosamente')
     
     // Limpiar formulario
-    firstName.value = ''
-    lastName.value = ''
     email.value = ''
     password.value = ''
-    dni.value = ''
-    phoneNumber.value = ''
     
     // Redirigir al login después de un segundo
     setTimeout(() => {
@@ -100,6 +67,9 @@ const handleRegister = async () => {
     
   } catch (error) {
     console.error('Registration error:', error)
+    const errorMessage = error.response?.data?.message || error.message || 'Error al registrar operario'
+    notificationService.error(errorMessage)
+    errors.value.general = errorMessage
   } finally {
     loading.value = false
   }
@@ -122,44 +92,6 @@ const goToLogin = () => {
             </p>
           </div>
           <form @submit.prevent="handleRegister" class="register-form">
-            <!-- First Name -->
-            <div class="input-group">
-              <pv-float-label>
-                <pv-input-text 
-                  id="firstName"
-                  v-model="firstName"
-                  :class="{ 'p-invalid': errors.firstName }"
-                />
-                <label for="firstName">
-                  <i class="pi pi-user"></i>
-                  {{ t('auth.firstName') }}
-                </label>
-              </pv-float-label>
-              <small v-if="errors.firstName" class="p-error">
-                <i class="pi pi-exclamation-triangle"></i>
-                {{ errors.firstName }}
-              </small>
-            </div>
-
-            <!-- Last Name -->
-            <div class="input-group">
-              <pv-float-label>
-                <pv-input-text 
-                  id="lastName"
-                  v-model="lastName"
-                  :class="{ 'p-invalid': errors.lastName }"
-                />
-                <label for="lastName">
-                  <i class="pi pi-user"></i>
-                  {{ t('auth.lastName') }}
-                </label>
-              </pv-float-label>
-              <small v-if="errors.lastName" class="p-error">
-                <i class="pi pi-exclamation-triangle"></i>
-                {{ errors.lastName }}
-              </small>
-            </div>
-
             <!-- Email -->
             <div class="input-group">
               <pv-float-label>
@@ -198,44 +130,6 @@ const goToLogin = () => {
               <small v-if="errors.password" class="p-error">
                 <i class="pi pi-exclamation-triangle"></i>
                 {{ errors.password }}
-              </small>
-            </div>
-
-            <!-- DNI -->
-            <div class="input-group">
-              <pv-float-label>
-                <pv-input-text 
-                  id="dni"
-                  v-model="dni"
-                  :class="{ 'p-invalid': errors.dni }"
-                />
-                <label for="dni">
-                  <i class="pi pi-id-card"></i>
-                  {{ t('auth.dni') }}
-                </label>
-              </pv-float-label>
-              <small v-if="errors.dni" class="p-error">
-                <i class="pi pi-exclamation-triangle"></i>
-                {{ errors.dni }}
-              </small>
-            </div>
-
-            <!-- Phone Number -->
-            <div class="input-group">
-              <pv-float-label>
-                <pv-input-text 
-                  id="phoneNumber"
-                  v-model="phoneNumber"
-                  :class="{ 'p-invalid': errors.phoneNumber }"
-                />
-                <label for="phoneNumber">
-                  <i class="pi pi-phone"></i>
-                  {{ t('auth.phoneNumber') }}
-                </label>
-              </pv-float-label>
-              <small v-if="errors.phoneNumber" class="p-error">
-                <i class="pi pi-exclamation-triangle"></i>
-                {{ errors.phoneNumber }}
               </small>
             </div>
 
