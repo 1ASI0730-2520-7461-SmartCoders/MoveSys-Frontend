@@ -30,13 +30,13 @@
     "title": "Panel de Control",
     "welcome": "Bienvenido a MoveSys",
     "quickAccess": "Accesos rápidos",
-    "usersDescription": "Gestiona usuarios del sistema",
+    "usersDescription": "Gestiona conductores del sistema",
     "deliveriesDescription": "Administra las entregas",
     "fleetDescription": "Controla vehículos y conductores",
     "fuelDescription": "Registra y analiza combustible",
     "maintenanceDescription": "Gestiona los mantenimientos de vehículos",
     "reportsDescription": "Visualiza estadísticas y métricas",
-    "goToUsers": "Ir a Usuarios",
+    "goToUsers": "Ir a Conductores",
     "goToDeliveries": "Ir a Entregas",
     "goToFleet": "Ir a Flota",
     "goToFuel": "Ir a Combustible",
@@ -44,13 +44,13 @@
     "goToReports": "Ir a Reportes"
   },
   "navigation": {
-    "dashboard": "Dashboard",
-    "deliveries": "Entregas",
-    "users": "Usuarios",
-    "fleetManagement": "Gestión de Flota",
-    "fuelConsumption": "Consumo de Combustible",
-    "maintenance": "Mantenimiento",
-    "reports": "Reportes",
+    "dashboard": "Panel",
+    "deliveries": "Órdenes de Entrega",
+    "users": "Conductores",
+    "fleetManagement": "Flota Activa",
+    "fuelConsumption": "Combustible & Costos",
+    "maintenance": "Mantenimientos",
+    "reports": "Data Operacional",
     "logout": "Salir"
   },
   "common": {
@@ -77,27 +77,35 @@
   },
   "forms": {
     "validation": {
-      "firstNameRequired": "El nombre es requerido",
-      "lastNameRequired": "El apellido es requerido",
-      "dniRequired": "El DNI es requerido",
-      "phoneRequired": "El teléfono es requerido",
+      "codeRequired": "Código requerido",
+      "customerNameRequired": "Nombre del cliente requerido",
+      "addressRequired": "Dirección requerida",
+      "originProvinceRequired": "Provincia de origen requerida",
+      "destinationProvinceRequired": "Provincia de destino requerida",
+      "licensePlateRequired": "Patente requerida",
+      "brandRequired": "Marca requerida",
+      "modelRequired": "Modelo requerido",
+      "yearRequired": "Año requerido",
+      "firstNameRequired": "Nombre requerido",
+      "lastNameRequired": "Apellido requerido",
+      "dniRequired": "DNI requerido",
+      "phoneRequired": "Teléfono requerido",
       "firstNameMinLength": "El nombre debe tener al menos 2 caracteres",
       "lastNameMinLength": "El apellido debe tener al menos 2 caracteres",
-      "dniMinLength": "El DNI debe tener al menos 7 caracteres",
-      "phoneValid": "Por favor ingrese un número de teléfono válido",
-      "codeRequired": "El código es requerido",
-      "customerNameRequired": "El nombre del cliente es requerido",
-      "customerNameMinLength": "El nombre del cliente debe tener al menos 3 caracteres",
-      "addressRequired": "La dirección es requerida"
+      "dniMinLength": "El DNI debe tener al menos 6 caracteres",
+      "phoneValid": "El teléfono debe ser válido",
+      "customerNameMinLength": "El nombre del cliente debe tener al menos 3 caracteres"
     },
     "user": {
-      "newUser": "Nuevo Usuario",
-      "editUser": "Editar Usuario",
+      "title": "Conductor",
+      "newUser": "Nuevo Conductor",
+      "editUser": "Editar Conductor",
       "firstName": "Nombre",
       "lastName": "Apellido",
       "dni": "DNI",
       "phone": "Teléfono",
-      "role": "Rol",
+      "phoneNumber": "Teléfono",
+      "role": "Cargo",
       "status": "Estado",
       "roleOptions": {
         "driver": "Conductor",
@@ -165,46 +173,6 @@
         "maintenance": "Mantenimiento",
         "outOfService": "Fuera de Servicio"
       }
-    },
-    "user": {
-      "title": "Usuario",
-      "newUser": "Nuevo Usuario",
-      "editUser": "Editar Usuario",
-      "firstName": "Nombre",
-      "lastName": "Apellido",
-      "dni": "DNI",
-      "phoneNumber": "Teléfono",
-      "role": "Cargo",
-      "status": "Estado",
-      "roleOptions": {
-        "driver": "Conductor",
-        "admin": "Administrador",
-        "operator": "Operador"
-      },
-      "statusOptions": {
-        "active": "Activo",
-        "inactive": "Inactivo",
-        "suspended": "Suspendido"
-      }
-    },
-    "validation": {
-      "codeRequired": "Código requerido",
-      "customerNameRequired": "Nombre del cliente requerido",
-      "addressRequired": "Dirección requerida",
-      "originProvinceRequired": "Provincia de origen requerida",
-      "destinationProvinceRequired": "Provincia de destino requerida",
-      "licensePlateRequired": "Patente requerida",
-      "brandRequired": "Marca requerida",
-      "modelRequired": "Modelo requerido",
-      "yearRequired": "Año requerido",
-      "firstNameRequired": "Nombre requerido",
-      "lastNameRequired": "Apellido requerido",
-      "dniRequired": "DNI requerido",
-      "phoneRequired": "Teléfono requerido",
-      "firstNameMinLength": "El nombre debe tener al menos 2 caracteres",
-      "lastNameMinLength": "El apellido debe tener al menos 2 caracteres",
-      "dniMinLength": "El DNI debe tener al menos 6 caracteres",
-      "phoneValid": "El teléfono debe ser válido"
     }
   },
   "reporting": {
@@ -216,26 +184,26 @@
     "searchDriver": "Nombre del chofer..."
   },
   "users": {
-    "title": "Gestión de Usuarios",
-    "subtitle": "Administra los usuarios del sistema",
-    "newUser": "Nuevo Usuario",
-    "userList": "Lista de Usuarios",
-    "usersFound": "{count} usuarios encontrados",
+    "title": "Gestión de Conductores",
+    "subtitle": "Administra los conductores del sistema",
+    "newUser": "Nuevo Conductor",
+    "userList": "Lista de Conductores",
+    "usersFound": "{count} conductores encontrados",
     "clearFilters": "Limpiar Filtros",
     "activate": "Activar",
     "deactivate": "Desactivar",
     "fixed": "fijo",
-    "confirmDelete": "¿Estás seguro de que deseas eliminar al usuario {name}?",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar al conductor {name}?",
     "confirmDeleteHeader": "Confirmar eliminación",
     "search": {
-      "placeholder": "Buscar usuarios..."
+      "placeholder": "Buscar conductores..."
     },
     "filters": {
       "role": "Filtrar por rol",
       "status": "Filtrar por estado"
     },
     "stats": {
-      "total": "Total Usuarios",
+      "total": "Total Conductores",
       "active": "Activos",
       "inactive": "Inactivos",
       "filtered": "Filtrados"
@@ -250,7 +218,7 @@
     },
     "export": {
       "button": "Exportar",
-      "filename": "usuarios.csv",
+      "filename": "conductores.csv",
       "id": "ID",
       "firstName": "Nombre",
       "lastName": "Apellido",
