@@ -2,11 +2,14 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { AuthApi } from '../../../infrastructure/auth-api.js'
+import { notificationService } from '../../../infrastructure/notification.service.js'
 
 const { t } = useI18n()
 const router = useRouter()
-const email = ref('admin@movesys.com')
-const password = ref('123456')
+const authApi = new AuthApi()
+const email = ref('')
+const password = ref('')
 const loading = ref(false)
 const emailError = ref('')
 const passwordError = ref('')
@@ -45,49 +48,40 @@ const validateForm = () => {
 }
 
 const handleLogin = async () => {
-  console.log(' Starting login process...')
-  
   if (!validateForm()) {
-    console.log(' Invalid form')
     return
   }
 
-  const validEmail = 'admin@movesys.com'
-  const validPassword = '123456'
-
-  if (email.value !== validEmail || password.value !== validPassword) {
-    emailError.value = t('auth.invalidCredentials')
-    passwordError.value = t('auth.invalidCredentials')
-    return
-  }
-
-  console.log(' Valid credentials, starting login...')
   loading.value = true
+  emailError.value = ''
+  passwordError.value = ''
 
   try {
-    console.log('⏳ Simulating login...')
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
-    const token = 'demo-token-' + Date.now()
-    const userData = {
-      email: email.value,
-      firstName: 'Administrator',
-      lastName: 'Movesys',
-      userType: 'Administrator'
+    const response = await authApi.signIn(email.value.trim(), password.value)
+    
+    // Guardar token y datos del usuario
+    if (response.token) {
+      localStorage.setItem('movesys_token', response.token)
+      localStorage.setItem('movesys_user', JSON.stringify({
+        id: response.id,
+        username: response.username,
+        email: response.username // El username es el email
+      }))
+      
+      notificationService.success('Inicio de sesión exitoso')
+      
+      // Redirigir al dashboard
+      await router.push('/dashboard')
+    } else {
+      throw new Error('No se recibió token del servidor')
     }
     
-    localStorage.setItem('movesys_token', token)
-    localStorage.setItem('movesys_user', JSON.stringify(userData))
-    
-    console.log('💾 Data saved to localStorage:', { token, userData })
-
-    console.log(' Redirecting to dashboard...')
-    await router.push('/dashboard')
-    console.log(' Redirection completed')
-    
   } catch (error) {
-    console.error(' Login error:', error)
-    alert(t('auth.loginError'))
+    console.error('Login error:', error)
+    const errorMessage = error.response?.data?.message || error.message || 'Error al iniciar sesión'
+    emailError.value = errorMessage
+    passwordError.value = errorMessage
+    notificationService.error(errorMessage)
   } finally {
     loading.value = false
   }
@@ -110,7 +104,7 @@ const handleLogin = async () => {
           <div class="credentials-info">
             <p class="info-text">
               <i class="pi pi-info-circle"></i>
-              {{ t('auth.usePredefinedCredentials') }}
+              Ingresa tu email y contraseña para iniciar sesión
             </p>
           </div>
           <form @submit.prevent="handleLogin" class="login-form">
