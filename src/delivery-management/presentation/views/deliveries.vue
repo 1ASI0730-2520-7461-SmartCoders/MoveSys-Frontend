@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useDeliveriesStore } from '../../application/deliveries.store.js'
 import { useVehiclesStore } from '../../../fleet-management/application/vehicles.store.js'
-import { useUsersStore } from '../../../ user-management/application/users.store.js'
+import { useConductoresStore } from '../../../conductores/application/conductores.store.js'
 import { ValidationService } from '../../../shared/infrastructure/validation.service.js'
 import { useConfirm } from 'primevue/useconfirm'
 
@@ -13,7 +13,7 @@ const { t } = useI18n()
 const router = useRouter()
 const store = useDeliveriesStore()
 const vehiclesStore = useVehiclesStore()
-const usersStore = useUsersStore()
+const conductoresStore = useConductoresStore()
 
 const confirm = useConfirm()
 
@@ -160,7 +160,7 @@ const save = async () => {
 onMounted(() => {
   store.fetchDeliveries()
   vehiclesStore.fetchVehicles()
-  usersStore.fetchUsers()
+  conductoresStore.fetchConductores()
 })
 </script>
 
