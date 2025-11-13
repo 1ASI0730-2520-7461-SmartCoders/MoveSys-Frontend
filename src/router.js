@@ -8,8 +8,8 @@ import Dashboard from './dashboard/presentation/views/dashboard.vue'
 import FleetManagement from './fleet-management/presentation/views/fleet-management.vue'
 import VehicleForm from './fleet-management/presentation/views/vehicle-form.vue'
 import Reports from './reporting/presentation/views/reports.vue'
-import Users from './user-management/presentation/views/users.vue'
-import UserForm from './user-management/presentation/views/user-form.vue'
+import Conductores from './conductores/presentation/views/conductores.vue'
+import ConductorForm from './conductores/presentation/views/conductor-form.vue'
 import DeliveryManagement from './delivery-management/presentation/views/deliveries.vue'
 import DeliveryForm from './delivery-management/presentation/views/delivery-form.vue'
 import Fuel from './fuel-consumption/presentation/views/fuel-consumption.vue'
@@ -67,21 +67,21 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/users',
-    name: 'Users',
-    component: Users,
+    path: '/conductores',
+    name: 'Conductores',
+    component: Conductores,
     meta: { requiresAuth: true }
   },
   {
-    path: '/users/formulario',
-    name: 'UserForm',
-    component: UserForm,
+    path: '/conductores/formulario',
+    name: 'ConductorForm',
+    component: ConductorForm,
     meta: { requiresAuth: true }
   },
   {
-    path: '/users/formulario/:id',
-    name: 'UserFormEdit',
-    component: UserForm,
+    path: '/conductores/formulario/:id',
+    name: 'ConductorFormEdit',
+    component: ConductorForm,
     meta: { requiresAuth: true }
   },
   {
@@ -152,22 +152,43 @@ const router = createRouter({
 
 // Navigation Guard
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('movesys_token') !== null
+  let token = localStorage.getItem('movesys_token')
+  
+  // Limpiar tokens inválidos o de desarrollo
+  if (token === 'dev-token-123' || token === '' || token === null) {
+    localStorage.removeItem('movesys_token')
+    localStorage.removeItem('movesys_user')
+    token = null
+  }
+  
+  const isAuthenticated = token !== null && token !== ''
   
   console.log('🛣️ Router Guard:', {
     to: to.path,
     from: from.path,
     isAuthenticated,
-    requiresAuth: to.meta.requiresAuth
+    requiresAuth: to.meta.requiresAuth,
+    token: token ? 'presente' : 'ausente'
   })
   
+  // Si la ruta requiere autenticación y no está autenticado, ir a login
   if (to.meta.requiresAuth && !isAuthenticated) {
     console.log('🔒 Redirigiendo a login - no autenticado')
     next('/login')
-  } else if ((to.name === 'Login' || to.name === 'Register') && isAuthenticated) {
-    console.log('🏠 Redirigiendo a dashboard - ya autenticado')
-    next('/dashboard')
-  } else {
+  } 
+  // Permitir acceso a login/register siempre (no redirigir automáticamente si está autenticado)
+  // Esto permite que el usuario siempre vea el login primero
+  else if (to.name === 'Login' || to.name === 'Register') {
+    console.log('✅ Acceso a login/register permitido')
+    next()
+  } 
+  // Si no está autenticado y no es login/register, redirigir a login
+  else if (!isAuthenticated) {
+    console.log('🔒 Redirigiendo a login - no autenticado')
+    next('/login')
+  } 
+  // Permitir navegación a rutas protegidas si está autenticado
+  else {
     console.log('✅ Navegación permitida')
     next()
   }
