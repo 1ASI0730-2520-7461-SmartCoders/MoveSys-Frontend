@@ -1,10 +1,16 @@
 import axios from 'axios';
 
-const primaryApi = import.meta.env.VITE_API_URL || 'http://localhost:5180';
-const fallbackApi = import.meta.env.VITE_MOVESYS_PLATFORM_API_FALLBACK_URL || '';
-const fallbackApis = [fallbackApi, import.meta.env.VITE_API_URL, 'http://localhost:5180', 'http://localhost:3000', 'http://localhost:3001', 'http://localhost:4000']
-  .filter(Boolean)
-  .filter((url, idx, arr) => arr.indexOf(url) === idx);
+// URL del backend: usar variable de entorno, Railway en producción, o localhost por defecto
+const primaryApi = import.meta.env.VITE_API_URL 
+  || (import.meta.env.PROD ? 'https://backend-movesys-production.up.railway.app' : 'http://localhost:5180');
+// En desarrollo, no usar fallbacks automáticos para evitar errores de CORS
+const fallbackApis = import.meta.env.PROD 
+  ? [
+      import.meta.env.VITE_MOVESYS_PLATFORM_API_FALLBACK_URL,
+      'https://backend-movesys-production.up.railway.app',
+      'https://movesys.azurewebsites.net'
+    ].filter(Boolean)
+  : [];
 
 export class BaseApi {
   #http;
@@ -44,9 +50,8 @@ export class BaseApi {
           return Promise.reject(error);
         }
 
-        // Intento de reconexión automático al fallback si el host principal falla
+        // Log útil para depurar errores
         const originalConfig = error.config || {};
-        // Log útil para depurar 404/Network Error
         try {
           const attemptedUrl = `${this.#http.defaults.baseURL || ''}${originalConfig.url || ''}`;
           // eslint-disable-next-line no-console
@@ -55,13 +60,17 @@ export class BaseApi {
             attemptedUrl,
             baseURL: this.#http.defaults.baseURL,
             method: originalConfig.method,
+            message: error.message,
+            corsError: !error.response && error.message?.includes('CORS')
           });
         } catch {}
+        
+        // Solo intentar fallback en producción y si hay fallbacks configurados
         const isNetworkError = !error.response;
         const retryCount = originalConfig._retryCount || 0;
+        const shouldRetry = isNetworkError && retryCount < fallbackApis.length && import.meta.env.PROD;
 
-        // Retry for network errors using alternate base URLs
-        if (isNetworkError && retryCount < fallbackApis.length) {
+        if (shouldRetry) {
           try {
             const nextBase = fallbackApis[retryCount];
             originalConfig._retryCount = retryCount + 1;
