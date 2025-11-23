@@ -7,8 +7,7 @@ const primaryApi = import.meta.env.VITE_API_URL
 const fallbackApis = import.meta.env.PROD 
   ? [
       import.meta.env.VITE_MOVESYS_PLATFORM_API_FALLBACK_URL,
-      'https://backend-movesys-production.up.railway.app',
-      'https://movesys.azurewebsites.net'
+      'https://backend-movesys-production.up.railway.app'
     ].filter(Boolean)
   : [];
 
