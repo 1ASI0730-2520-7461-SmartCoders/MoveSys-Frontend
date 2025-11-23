@@ -2,23 +2,24 @@ import { Maintenance } from '../domain/maintenance.entity.js';
 
 export class MaintenanceAssembler {
   static toEntityFromResource(resource) {
+    // El backend devuelve PascalCase, pero también puede devolver camelCase
     return new Maintenance({
-      id: resource.id,
-      vehicleId: resource.vehicle_id || resource.vehicleId,
-      vehiclePlate: resource.vehicle_plate || resource.vehiclePlate,
-      model: resource.model,
-      maintenanceType: resource.maintenance_type || resource.maintenanceType || 'preventive',
-      description: resource.description,
-      cost: resource.cost || 0,
-      mileage: resource.mileage,
-      maintenanceDate: resource.maintenance_date || resource.maintenanceDate,
-      nextMaintenanceDate: resource.next_maintenance_date || resource.nextMaintenanceDate,
-      nextMaintenanceMileage: resource.next_maintenance_mileage || resource.nextMaintenanceMileage,
-      provider: resource.provider,
-      parts: resource.parts || [],
-      mechanic: resource.mechanic,
-      notes: resource.notes,
-      status: resource.status || 'scheduled'
+      id: resource.Id || resource.id,
+      vehicleId: resource.VehicleId || resource.vehicleId || resource.vehicle_id,
+      vehiclePlate: resource.VehiclePlate || resource.vehiclePlate || resource.vehicle_plate,
+      model: resource.Model || resource.model,
+      maintenanceType: resource.MaintenanceType || resource.maintenanceType || resource.maintenance_type || 'preventive',
+      description: resource.Description || resource.description,
+      cost: resource.Cost || resource.cost || 0,
+      mileage: resource.Mileage || resource.mileage,
+      maintenanceDate: resource.MaintenanceDate || resource.maintenanceDate || resource.maintenance_date,
+      nextMaintenanceDate: resource.NextMaintenanceDate || resource.nextMaintenanceDate || resource.next_maintenance_date,
+      nextMaintenanceMileage: resource.NextMaintenanceMileage || resource.nextMaintenanceMileage || resource.next_maintenance_mileage,
+      provider: resource.Provider || resource.provider,
+      parts: resource.Parts || resource.parts || [],
+      mechanic: resource.Mechanic || resource.mechanic,
+      notes: resource.Notes || resource.notes,
+      status: resource.Status || resource.status || 'scheduled'
     });
   }
 
@@ -70,6 +71,7 @@ export class MaintenanceAssembler {
     return this.toCreateResource(entity);
   }
 }
+
 
 
 

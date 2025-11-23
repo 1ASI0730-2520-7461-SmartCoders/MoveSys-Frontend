@@ -17,6 +17,11 @@ export class FuelApi extends BaseApi {
     return FuelEntryAssembler.toEntitiesFromResponse(response);
   }
 
+  async getById(id) {
+    const response = await this.#endpoint.getById(id);
+    return FuelEntryAssembler.toEntityFromResource(response.data);
+  }
+
   async create(entry) {
     const payload = FuelEntryAssembler.toCreateResource(entry);
     const response = await this.#endpoint.create(payload);
@@ -24,8 +29,16 @@ export class FuelApi extends BaseApi {
   }
 
   async update(entry) {
+    // Validar que el entry tenga un ID válido
+    if (!entry.id || entry.id === null || entry.id === undefined) {
+      throw new Error('No se puede actualizar un registro sin ID');
+    }
     const payload = FuelEntryAssembler.toUpdateResource(entry);
     const response = await this.#endpoint.update(entry.id, payload);
+    // Si el backend devuelve 204 NoContent, obtener el registro actualizado
+    if (response.status === 204 || !response.data) {
+      return await this.getById(entry.id);
+    }
     return FuelEntryAssembler.toEntityFromResource(response.data);
   }
 

@@ -33,17 +33,24 @@ export class MaintenanceApi extends BaseApi {
   }
 
   async remove(id) {
+    // Validar que el ID sea válido
+    if (!id || id === null || id === undefined || id === 'null' || id === 'undefined') {
+      throw new Error('No se puede eliminar: ID inválido');
+    }
+    
     try {
       await this.#endpoint.delete(id);
       return true;
     } catch (error) {
       if (error.response?.status === 404) {
+        // Si el registro ya no existe, considerarlo como éxito
         return true;
       }
       throw error;
     }
   }
 }
+
 
 
 

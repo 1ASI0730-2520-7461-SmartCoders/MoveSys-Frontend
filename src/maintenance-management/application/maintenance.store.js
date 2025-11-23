@@ -111,19 +111,24 @@ export const useMaintenanceStore = defineStore('maintenance', () => {
   }
 
   async function deleteRecord(id) {
+    // Validar que el ID sea válido
+    if (!id || id === null || id === undefined || id === 'null' || id === 'undefined') {
+      notificationService.error('No se puede eliminar: ID inválido');
+      return;
+    }
+    
     loading.value = true;
     try {
-      const idx = records.value.findIndex(r => r.id === id);
+      // Primero intentar eliminar del servidor
+      await api.remove(id);
+      
+      // Solo si la eliminación del servidor fue exitosa, eliminar de la lista local
+      const idx = records.value.findIndex(r => r.id == id);
       if (idx !== -1) {
         records.value.splice(idx, 1);
-        notificationService.success('Mantenimiento eliminado');
-        
-        try {
-          await api.remove(id);
-        } catch (error) {
-          console.warn('Could not delete from server:', error);
-        }
       }
+      
+      notificationService.success('Mantenimiento eliminado');
     } catch (error) {
       const message = error.response?.data?.message || error.message || 'Error al eliminar mantenimiento';
       errors.value.push(message);

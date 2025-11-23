@@ -146,8 +146,15 @@ const save = async () => {
 }
 
 const deleteRecord = async (id) => {
+  // Validar que el ID sea válido antes de intentar eliminar
+  if (!id || id === null || id === undefined || id === 'null' || id === 'undefined') {
+    console.error('Error: ID inválido para eliminar:', id)
+    return
+  }
+  
   try {
     await store.deleteRecord(id)
+    // Recargar la lista después de eliminar exitosamente
     await store.fetchRecords()
   } catch (error) {
     console.error('Error deleting maintenance:', error)

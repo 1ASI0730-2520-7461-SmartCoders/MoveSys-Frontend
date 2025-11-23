@@ -154,10 +154,13 @@ const handleSave = async () => {
       notes: form.value.notes
     }
     
-    if (editMode.value) {
-      entryData.id = route.params.id
+    // Solo actualizar si estamos en modo edición Y tenemos un ID válido
+    const entryId = route.params.id
+    if (editMode.value && entryId && entryId !== 'null' && entryId !== 'undefined') {
+      entryData.id = Number(entryId)
       await store.updateEntry(entryData)
     } else {
+      // Crear nuevo registro
       await store.addEntry(entryData)
     }
     

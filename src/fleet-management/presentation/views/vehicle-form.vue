@@ -65,8 +65,25 @@ const driversOptions = computed(() =>
 )
 
 const validateForm = () => {
+  // Validación adicional para el año
+  const year = form.value.year
+  if (year != null) {
+    const currentYear = new Date().getFullYear()
+    const yearInt = Math.round(Number(year))
+    
+    if (yearInt < 1900 || yearInt > currentYear + 1) {
+      formErrors.value.year = `El campo 'year' debe ser un año válido entre 1900 y ${currentYear + 1}. Valor recibido: ${year}`
+      return false
+    }
+    
+    // Asegurar que el año sea un entero
+    if (year !== yearInt) {
+      form.value.year = yearInt
+    }
+  }
+  
   const validation = ValidationService.validateForm(form.value, validationRules.value)
-  formErrors.value = validation.errors
+  formErrors.value = { ...formErrors.value, ...validation.errors }
   return validation.isValid
 }
 
@@ -187,7 +204,10 @@ onMounted(async () => {
                 class="w-full" 
                 :class="{ 'p-invalid': formErrors.year }"
                 :min="1900"
-                :max="2030"
+                :max="new Date().getFullYear() + 1"
+                :useGrouping="false"
+                :fractionDigits="0"
+                :step="1"
               />
               <label for="year">{{ t('forms.vehicle.year') }} *</label>
             </pv-float-label>
